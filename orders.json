@@ -1,0 +1,141 @@
+[
+    {
+        "id": "40f14e746b8cd674be95c02deaf3f815",
+        "orderNumber": "AL-20261003-7E4CC6",
+        "customerId": "186f9ce9852bcbebb3e89a0d24a7932d",
+        "customerName": "Nada Barakat",
+        "customerEmail": "nadabarakat731@gmail.com",
+        "items": [
+            {
+                "id": "a11e0000000000000000000000000001",
+                "name": "LDPlayer 9/14 MEmu Player 12 - 24 Hours",
+                "unitPrice": 5,
+                "quantity": 1,
+                "lineTotal": 5
+            }
+        ],
+        "total": 5,
+        "createdAt": "2026-10-03T20:00:00Z",
+        "status": "Payment confirmed",
+        "emailStatus": "sent"
+    },
+    {
+        "id": "ffa2bd6cd86c6e5fe5ef1ccbb137c414",
+        "orderNumber": "AL-20261007-948AF9",
+        "customerId": "9a5b61aa950e2c95e439d2c2edf4affa",
+        "customerName": "c2k",
+        "customerEmail": "hhhh@gmail.com",
+        "items": [
+            {
+                "id": "a11e0000000000000000000000000001",
+                "name": "LDPlayer 9/14 MEmu Player 12 - 24 Hours",
+                "unitPrice": 5,
+                "quantity": 1,
+                "lineTotal": 5
+            }
+        ],
+        "total": 5,
+        "createdAt": "2026-10-07T11:52:47+00:00",
+        "status": "Payment confirmed",
+        "emailStatus": "failed",
+        "confirmedAt": "2026-10-07T23:27:50+00:00",
+        "emailAttemptAt": "2026-10-07T23:27:56+00:00",
+        "emailError": "Order confirmed, but the confirmation email could not be sent. Check email configuration and retry."
+    },
+    {
+        "id": "7ea21ebdd5ee1cc6c6084444c80f8cfc",
+        "orderNumber": "AL-20261007-F8854E",
+        "customerId": "9a5b61aa950e2c95e439d2c2edf4affa",
+        "customerName": "c2k",
+        "customerEmail": "hhhh@gmail.com",
+        "items": [
+            {
+                "id": "a11e0000000000000000000000000001",
+                "name": "LDPlayer 9/14 MEmu Player 12 - 24 Hours",
+                "unitPrice": 5,
+                "quantity": 1,
+                "lineTotal": 5
+            }
+        ],
+        "total": 5,
+        "createdAt": "2026-10-07T11:55:49+00:00",
+        "status": "Payment confirmed",
+        "emailStatus": "failed",
+        "confirmedAt": "2026-10-07T23:27:58+00:00",
+        "emailAttemptAt": "2026-10-08T10:48:10+00:00",
+        "emailError": "Order confirmed, but the confirmation email could not be sent. Check email configuration and retry."
+    },
+    {
+        "id": "1fca71d9670cb90756b0ec35f426a7e5",
+        "orderNumber": "AL-20261007-DB2A91",
+        "customerId": "7a554793b367a9107826fd3c54d1c62d",
+        "customerName": "ABO SALAH",
+        "customerEmail": "wwangabdallahwang@gmail.com",
+        "items": [
+            {
+                "id": "a11e0000000000000000000000000001",
+                "name": "LDPlayer 9/14 MEmu Player 12 - 24 Hours",
+                "unitPrice": 5,
+                "quantity": 1,
+                "lineTotal": 5
+            }
+        ],
+        "total": 5,
+        "createdAt": "2026-10-07T23:35:13+00:00",
+        "status": "Payment confirmed",
+        "emailStatus": "failed",
+        "confirmedAt": "2026-10-07T23:52:14+00:00",
+        "emailAttemptAt": "2026-10-08T10:48:10+00:00",
+        "emailError": "Order confirmed, but the confirmation email could not be sent. Check email configuration and retry."
+    },
+    {
+        "id": "a7d033e0ca80d95c33ed60a860331669",
+        "orderNumber": "AL-20261008-D5088F",
+        "customerId": "7a554793b367a9107826fd3c54d1c62d",
+        "customerName": "ABO SALAH",
+        "customerEmail": "wwangabdallahwang@gmail.com",
+        "items": [
+            {
+                "id": "c33e0000000000000000000000000001",
+                "name": "GameLoop - 24 Hours",
+                "unitPrice": 5,
+                "quantity": 1,
+                "lineTotal": 5
+            },
+            {
+                "id": "a11e0000000000000000000000000001",
+                "name": "LDPlayer 9/14 MEmu Player 12 - 24 Hours",
+                "unitPrice": 5,
+                "quantity": 1,
+                "lineTotal": 5
+            }
+        ],
+        "total": 10,
+        "createdAt": "2026-10-08T00:02:31+00:00",
+        "status": "Payment confirmed",
+        "emailStatus": "failed",
+        "confirmedAt": "2026-10-08T00:03:10+00:00",
+        "emailAttemptAt": "2026-10-08T10:48:10+00:00",
+        "emailError": "Order confirmed, but the confirmation email could not be sent. Check email configuration and retry."
+    },
+    {
+        "id": "0dc8f0db251bf50d0da065b58ce65ed3",
+        "orderNumber": "AL-20261008-DE2D43",
+        "customerId": "0d509811241f1eed901c8bd774133115",
+        "customerName": "body",
+        "customerEmail": "abos68alah@gmail.com",
+        "items": [
+            {
+                "id": "e55e0000000000000000000000000003",
+                "name": "AIM X - 30 Days",
+                "unitPrice": 30,
+                "quantity": 1,
+                "lineTotal": 30
+            }
+        ],
+        "total": 30,
+        "createdAt": "2026-10-08T10:53:04+00:00",
+        "status": "Awaiting payment confirmation",
+        "emailStatus": "not_sent"
+    }
+]

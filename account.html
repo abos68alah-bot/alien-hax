@@ -1,0 +1,562 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#080b12" />
+  <title>Sign In | ALIEN hax</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #080b12;
+      --panel: #111722;
+      --line: rgba(255,255,255,.13);
+      --text: #f8f5ec;
+      --muted: #c2bca8;
+      --gold: #f4c20d;
+      --gold-light: #ffd43b;
+      --error: #ff9188;
+      --success: #a3e635;
+      font-family: "Bahnschrift", "Segoe UI", sans-serif;
+      color: var(--text);
+      background: var(--bg);
+    }
+    * { box-sizing: border-box; }
+    body {
+      min-height: 100vh;
+      margin: 0;
+      display: grid;
+      place-items: center;
+      padding: 22px;
+      background:
+        radial-gradient(ellipse at 16% 10%, rgba(244,194,13,.12), transparent 34%),
+        radial-gradient(ellipse at 86% 92%, rgba(60,131,246,.1), transparent 35%),
+        var(--bg);
+    }
+    .card {
+      width: min(460px, 100%);
+      padding: clamp(25px, 7vw, 42px);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: linear-gradient(145deg, rgba(17,23,34,.98), rgba(10,13,20,.99));
+      box-shadow: 0 35px 100px rgba(0,0,0,.48);
+      position: relative;
+    }
+    .brand { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; }
+    .brand img { width: 48px; height: 48px; object-fit: contain; }
+    .brand strong { display: block; font-size: 18px; letter-spacing: .04em; }
+    .brand span { color: var(--muted); font-size: 12px; }
+    .eyebrow { margin: 0 0 8px; color: var(--gold-light); font-size: 11px; font-weight: 850; letter-spacing: .16em; text-transform: uppercase; }
+    h1 { margin: 0; font-size: clamp(26px, 6vw, 34px); }
+    .intro { margin: 9px 0 22px; color: var(--muted); line-height: 1.55; font-size: 14px; }
+    button, input { font: inherit; }
+    button { color: inherit; }
+    .submit, .btn-secondary, .mode {
+      min-height: 44px;
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      background: rgba(255,255,255,.035);
+      cursor: pointer;
+      font-weight: 800;
+      transition: all .2s ease;
+    }
+    .field { display: grid; gap: 7px; margin: 15px 0; }
+    label { color: var(--muted); font-size: 13px; font-weight: 750; }
+    input {
+      width: 100%;
+      min-height: 46px;
+      padding: 11px 12px;
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      outline: none;
+      background: rgba(4,7,12,.72);
+      color: var(--text);
+      transition: border-color .2s ease;
+    }
+    input:focus { border-color: var(--gold); }
+    .forgot-wrap { display: flex; justify-content: flex-end; margin-top: 4px; }
+    .forgot-link {
+      color: var(--gold-light);
+      font-size: 12px;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      transition: color .2s ease;
+    }
+    .forgot-link:hover { text-decoration: underline; color: var(--gold); }
+    .submit {
+      width: 100%;
+      margin-top: 14px;
+      color: #14120b;
+      border-color: transparent;
+      background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    }
+    .submit:hover { filter: brightness(1.08); transform: translateY(-1px); }
+    .submit:disabled { opacity: .6; cursor: wait; transform: none; }
+    .message { min-height: 22px; margin: 12px 0 0; color: var(--error); font-size: 13px; line-height: 1.5; }
+    .back { display: inline-block; margin-top: 16px; color: var(--gold-light); font-size: 13px; font-weight: 750; text-decoration: none; }
+    .back:hover { text-decoration: underline; }
+    .footer-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; font-size: 13px; }
+
+    /* Signed In Profile Card */
+    .profile-card {
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(255,255,255,.025);
+      margin-bottom: 22px;
+    }
+    .profile-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .profile-info h2 { margin: 0; font-size: 18px; color: var(--text); }
+    .profile-info p { margin: 4px 0 0; color: var(--muted); font-size: 13px; }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 10px;
+      border-radius: 999px;
+      background: rgba(163,230,53,.12);
+      border: 1px solid rgba(163,230,53,.3);
+      color: var(--success);
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+    }
+    .badge::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--success);
+      box-shadow: 0 0 8px var(--success);
+    }
+    .profile-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      margin-top: 16px;
+    }
+    .btn-secondary {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      text-decoration: none;
+      color: var(--text);
+    }
+    .btn-secondary:hover { border-color: var(--gold); color: var(--gold-light); }
+    .btn-danger {
+      width: 100%;
+      min-height: 44px;
+      border: 1px solid rgba(255,145,136,.3);
+      border-radius: 999px;
+      background: rgba(255,145,136,.06);
+      color: var(--error);
+      cursor: pointer;
+      font-weight: 800;
+      transition: all .2s ease;
+    }
+    .btn-danger:hover { background: rgba(255,145,136,.15); border-color: var(--error); }
+
+    /* Orders View */
+    .orders-list { display: grid; gap: 12px; margin-top: 22px; }
+    .order-card { padding: 15px; border: 1px solid var(--line); border-radius: 11px; background: rgba(255,255,255,.025); }
+    .order-card h3 { margin: 0 0 8px; font-size: 16px; color: var(--gold-light); }
+    .order-card p { margin: 5px 0; color: var(--muted); font-size: 13px; line-height: 1.5; }
+    .order-card strong { color: var(--text); }
+    .orders-message { color: var(--muted); font-size: 14px; }
+
+    /* Toast Notifications */
+    .toast-container {
+      position: fixed;
+      top: 24px;
+      right: 24px;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-width: 380px;
+      width: calc(100% - 48px);
+      pointer-events: none;
+    }
+    [dir="rtl"] .toast-container { right: auto; left: 24px; }
+    .toast {
+      padding: 14px 18px;
+      border-radius: 12px;
+      background: rgba(17, 23, 34, 0.96);
+      border: 1px solid var(--gold);
+      box-shadow: 0 15px 40px rgba(0,0,0,0.6), 0 0 25px rgba(244,194,13,0.15);
+      color: var(--text);
+      font-size: 13px;
+      font-weight: 750;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      backdrop-filter: blur(12px);
+      animation: toastIn .35s cubic-bezier(.16,1,.3,1) forwards;
+      pointer-events: auto;
+    }
+    .toast.success { border-color: var(--success); box-shadow: 0 15px 40px rgba(0,0,0,0.6), 0 0 25px rgba(163,230,53,0.2); }
+    .toast.error { border-color: var(--error); box-shadow: 0 15px 40px rgba(0,0,0,0.6), 0 0 25px rgba(255,145,136,0.2); }
+    @keyframes toastIn { from { opacity: 0; transform: translateY(-12px) scale(.96); } to { opacity: 1; transform: translateY(0) scale(1); } }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .card { animation: appear .35s ease-out both; }
+      @keyframes appear { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    }
+  </style>
+</head>
+<body>
+  <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+  <main class="card">
+    <div class="brand">
+      <img src="/assets/images/ALIEN.png" alt="ALIEN hax" />
+      <div><strong>ALIEN hax</strong><span data-en="Customer account" data-ar="حساب العميل">Customer account</span></div>
+    </div>
+    <p class="eyebrow" id="eyebrow" data-en="SECURE PORTAL" data-ar="بوابة آمنة">SECURE PORTAL</p>
+    
+    <h1 id="formTitle">Sign in</h1>
+    <p class="intro" id="formIntro">Sign in to your customer account to continue.</p>
+
+    <!-- Sign In Form (Strictly Email & Password only) -->
+    <form id="accountForm" novalidate>
+      <div class="field" id="emailField">
+        <label for="email" id="emailLabel">Email address</label>
+        <input id="email" name="email" type="email" inputmode="email" autocomplete="email" maxlength="254" required />
+      </div>
+
+      <div class="field" id="passwordField">
+        <label for="password" id="passwordLabel">Password</label>
+        <input id="password" name="password" type="password" autocomplete="current-password" required />
+        <div class="forgot-wrap">
+          <a class="forgot-link" id="forgotPasswordLink">Forgot password?</a>
+        </div>
+      </div>
+
+      <button class="submit" id="submitButton" type="submit">Sign in</button>
+      <p class="message" id="message" role="alert" aria-live="polite"></p>
+    </form>
+
+    <!-- Signed-in Customer Profile View -->
+    <div id="signedInView" hidden>
+      <div class="profile-card">
+        <div class="profile-header">
+          <div class="profile-info">
+            <h2 id="profileName">Customer Name</h2>
+            <p id="profileEmail">customer@example.com</p>
+          </div>
+          <span class="badge" data-en="Signed in" data-ar="مسجل الدخول">Signed in</span>
+        </div>
+      </div>
+      <div class="profile-actions">
+        <button class="mode" id="viewOrdersBtn" type="button" data-en="My Orders" data-ar="طلباتي">My Orders</button>
+        <button class="btn-danger" id="signOutBtn" type="button" data-en="Sign out" data-ar="تسجيل الخروج">Sign out</button>
+      </div>
+    </div>
+
+    <!-- Orders View -->
+    <section id="ordersView" hidden>
+      <h2 id="ordersTitle" style="margin-bottom:14px; font-size:22px;">Your orders</h2>
+      <div class="orders-list" id="ordersList" aria-live="polite"></div>
+      <button class="btn-secondary" id="backToProfileBtn" type="button" style="margin-top:16px;" data-en="Back to profile" data-ar="العودة للملف الشخصي">Back to profile</button>
+    </section>
+
+    <div class="footer-nav">
+      <a class="forgot-link" id="registerLink" href="/register" data-en="Don't have an account? Create account" data-ar="ليس لديك حساب؟ إنشاء حساب جديد">Don't have an account? Create account</a>
+      <a class="back" id="backToStoreLink" href="/" data-en="Back to store" data-ar="العودة إلى المتجر">Back to store</a>
+    </div>
+  </main>
+
+  <script>
+    const copy = {
+      en: {
+        loginTitle: 'Sign in',
+        loginIntro: 'Sign in to your customer account to continue.',
+        email: 'Email address', password: 'Password',
+        loginSubmit: 'Sign in',
+        signingIn: 'Signing in…',
+        badLogin: 'Invalid email or password.',
+        generic: 'Invalid email or password.',
+        customer: 'Customer account', secure: 'SECURE PORTAL', back: 'Back to store',
+        signedInTitle: 'Welcome back', signedInIntro: 'Manage your account and view your order history.',
+        signOut: 'Sign out', myOrders: 'My Orders',
+        signedInToast: 'Signed in successfully!',
+        signedOutToast: 'Signed out successfully.',
+        registeredToast: 'Account created successfully. Sign in to continue.',
+        forgotNotice: 'To reset your password, please use the account recovery link or contact support.',
+        ordersTitle: 'Your orders', noOrders: 'You have no orders yet.',
+        orderStatus: 'Status', confirmationEmail: 'Confirmation email', emailSent: 'Sent',
+        emailFailed: 'Not sent — contact support if payment was confirmed',
+        awaitingEmail: 'Will be sent after payment is confirmed', orderDate: 'Placed',
+        awaitingPayment: 'Awaiting payment confirmation', paymentConfirmed: 'Payment confirmed',
+        quantity: 'Quantity', total: 'Total', loadOrdersFailed: 'Could not load your orders. Please try again.'
+      },
+      ar: {
+        loginTitle: 'تسجيل الدخول',
+        loginIntro: 'سجّل الدخول إلى حسابك لمتابعة عملية الشراء.',
+        email: 'البريد الإلكتروني', password: 'كلمة المرور',
+        loginSubmit: 'تسجيل الدخول',
+        signingIn: 'جارٍ تسجيل الدخول…',
+        badLogin: 'البريد الإلكتروني أو كلمة المرور غير صحيحة.',
+        generic: 'البريد الإلكتروني أو كلمة المرور غير صحيحة.',
+        customer: 'حساب العميل', secure: 'بوابة آمنة', back: 'العودة إلى المتجر',
+        signedInTitle: 'مرحباً بعودتك', signedInIntro: 'إدارة حسابك واستعراض سجل طلباتك.',
+        signOut: 'تسجيل الخروج', myOrders: 'طلباتي',
+        signedInToast: 'تم تسجيل الدخول بنجاح!',
+        signedOutToast: 'تم تسجيل الخروج بنجاح.',
+        registeredToast: 'تم إنشاء الحساب بنجاح. سجّل الدخول للمتابعة.',
+        forgotNotice: 'لإعادة تعيين كلمة المرور الخاصة بك، يرجى التواصل مع الدعم أو التوجه إلى صفحة الاستعادة.',
+        ordersTitle: 'طلباتك', noOrders: 'ليس لديك طلبات حتى الآن.',
+        orderStatus: 'الحالة', confirmationEmail: 'رسالة التأكيد', emailSent: 'تم الإرسال',
+        emailFailed: 'لم تُرسل — تواصل مع الدعم إذا تم تأكيد الدفع',
+        awaitingEmail: 'ستُرسل بعد تأكيد الدفع', orderDate: 'تاريخ الطلب',
+        awaitingPayment: 'بانتظار تأكيد الدفع', paymentConfirmed: 'تم تأكيد الدفع',
+        quantity: 'الكمية', total: 'الإجمالي', loadOrdersFailed: 'تعذر تحميل طلباتك. حاول مرة أخرى.'
+      }
+    };
+
+    let language = 'en';
+    let mode = 'login'; // 'login', 'authenticated'
+    let returnTo = '/';
+    let currentUser = null;
+
+    const form = document.getElementById('accountForm');
+    const passwordInput = document.getElementById('password');
+    const message = document.getElementById('message');
+    const t = (key, vars = {}) => {
+      let str = copy[language][key] || copy.en[key] || key;
+      for (const [k, v] of Object.entries(vars)) {
+        str = str.replace(new RegExp(`\\{${k}\\}`, 'g'), v);
+      }
+      return str;
+    };
+
+    function showToast(msg, type = 'success') {
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      toast.className = `toast ${type}`;
+      toast.textContent = msg;
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(-10px)';
+        setTimeout(() => toast.remove(), 300);
+      }, 4000);
+    }
+
+    function escapeHtml(str) {
+      return String(str ?? '').replace(/[&<>"']/g, (c) => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+      })[c]);
+    }
+
+    function safeReturnPath(value) {
+      if (!value || !value.startsWith('/') || value.startsWith('//') || value.includes('\\')) return '/';
+      try {
+        const url = new URL(value, location.origin);
+        const isOrdersPage = url.pathname === '/account' && url.searchParams.get('view') === 'orders';
+        return url.origin === location.origin && (isOrdersPage || !['/account', '/account.html', '/admin-login', '/dashboard'].includes(url.pathname))
+          ? `${url.pathname}${url.search}${url.hash}`
+          : '/';
+      } catch {
+        return '/';
+      }
+    }
+
+    function renderMode() {
+      const isAuthenticated = mode === 'authenticated';
+
+      document.documentElement.lang = language;
+      document.documentElement.dir = language === 'ar' ? 'rtl' : 'ltr';
+
+      document.querySelector('.brand span').textContent = t('customer');
+      document.getElementById('eyebrow').textContent = t('secure');
+      document.getElementById('backToStoreLink').textContent = t('back');
+
+      document.getElementById('accountForm').hidden = isAuthenticated;
+      document.getElementById('signedInView').hidden = !isAuthenticated;
+      document.getElementById('ordersView').hidden = true;
+      document.getElementById('registerLink').hidden = isAuthenticated;
+
+      if (isAuthenticated) {
+        document.getElementById('formTitle').textContent = `${t('signedInTitle')}, ${currentUser ? (currentUser.fullName || currentUser.email) : ''}!`;
+        document.getElementById('formIntro').textContent = t('signedInIntro');
+        document.getElementById('profileName').textContent = currentUser ? (currentUser.fullName || 'Customer') : 'Customer';
+        document.getElementById('profileEmail').textContent = currentUser ? currentUser.email : '';
+        return;
+      }
+
+      document.getElementById('formTitle').textContent = t('loginTitle');
+      document.getElementById('formIntro').textContent = t('loginIntro');
+      document.getElementById('emailLabel').textContent = t('email');
+      document.getElementById('passwordLabel').textContent = t('password');
+      document.getElementById('submitButton').textContent = t('loginSubmit');
+      passwordInput.autocomplete = 'current-password';
+    }
+
+    document.getElementById('forgotPasswordLink').addEventListener('click', () => {
+      showToast(t('forgotNotice'), 'error');
+    });
+
+    document.getElementById('signOutBtn').addEventListener('click', async () => {
+      try {
+        await fetch('/api/auth/logout', { method: 'POST', credentials: 'same-origin' });
+        currentUser = null;
+        mode = 'login';
+        showToast(t('signedOutToast'), 'success');
+        renderMode();
+      } catch (err) {
+        console.error('Sign out failed', err);
+      }
+    });
+
+    document.getElementById('viewOrdersBtn').addEventListener('click', async () => {
+      document.getElementById('signedInView').hidden = true;
+      document.getElementById('ordersView').hidden = false;
+      await loadOrders();
+    });
+
+    document.getElementById('backToProfileBtn').addEventListener('click', () => {
+      document.getElementById('ordersView').hidden = true;
+      document.getElementById('signedInView').hidden = false;
+    });
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      message.textContent = '';
+      const email = document.getElementById('email').value.trim().toLowerCase();
+      const passwordValue = passwordInput.value;
+
+      if (!email || !email.includes('@')) {
+        message.textContent = t('badLogin');
+        return;
+      }
+
+      const button = document.getElementById('submitButton');
+      button.disabled = true;
+      button.textContent = t('signingIn');
+
+      try {
+        const response = await fetch('/api/auth/login', {
+          method: 'POST',
+          credentials: 'same-origin',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password: passwordValue })
+        });
+        const result = await response.json();
+        if (!response.ok) {
+          message.textContent = t('badLogin');
+          return;
+        }
+
+        currentUser = { email, fullName: result.fullName || email };
+        mode = 'authenticated';
+        // Redirect immediately to the store (or the originating page).
+        // Use replace() so Back button does NOT return to the login page.
+        window.location.replace(returnTo && returnTo !== '/account' && returnTo !== '/account.html' ? returnTo : '/');
+
+      } catch (error) {
+        console.error('Auth request failed', error);
+        message.textContent = t('badLogin');
+      } finally {
+        button.disabled = false;
+        button.textContent = t('loginSubmit');
+      }
+    });
+
+    async function loadOrders() {
+      const list = document.getElementById('ordersList');
+      try {
+        const response = await fetch('/api/account/orders', { credentials: 'same-origin', cache: 'no-store' });
+        const result = await response.json();
+        if (!response.ok) throw new Error(result.error || t('loadOrdersFailed'));
+        if (!Array.isArray(result)) throw new Error(t('loadOrdersFailed'));
+        if (!result.length) {
+          list.innerHTML = `<p class="orders-message">${t('noOrders')}</p>`;
+          return;
+        }
+        list.innerHTML = result.slice().reverse().map((order) => {
+          const emailStatus = order.emailStatus === 'sent' ? t('emailSent')
+            : order.emailStatus === 'failed' ? t('emailFailed') : t('awaitingEmail');
+          const orderStatus = order.status === 'Payment confirmed'
+            ? t('paymentConfirmed')
+            : order.status === 'Awaiting payment confirmation' ? t('awaitingPayment') : order.status;
+          const items = (order.items || []).map((item) =>
+            `<p>${escapeHtml(item.name)} · ${t('quantity')}: ${Number(item.quantity) || 1}</p>`).join('');
+          return `<article class="order-card">
+            <h3>${escapeHtml(order.orderNumber)}</h3>
+            <p><strong>${t('orderStatus')}:</strong> ${escapeHtml(orderStatus)}</p>
+            <p><strong>${t('confirmationEmail')}:</strong> ${escapeHtml(emailStatus)}</p>
+            <p><strong>${t('orderDate')}:</strong> ${escapeHtml(new Date(order.createdAt).toLocaleString(language === 'ar' ? 'ar' : 'en'))}</p>
+            ${items}
+            <p><strong>${t('total')}:</strong> $${Number(order.total).toFixed(2)}</p>
+          </article>`;
+        }).join('');
+      } catch (error) {
+        console.error('Could not load customer orders.', error);
+        list.innerHTML = `<p class="message">${escapeHtml(error.message || t('loadOrdersFailed'))}</p>`;
+      }
+    }
+
+    async function initialize() {
+      try {
+        const savedLanguage = localStorage.getItem('alien-customer-language');
+        if (savedLanguage === 'ar') language = 'ar';
+      } catch (error) {
+        console.error('Could not load language preference.', error);
+      }
+
+      const query = new URLSearchParams(location.search);
+      const viewingOrders = query.get('view') === 'orders';
+      returnTo = query.has('return') ? safeReturnPath(query.get('return')) : '/';
+      const justRegistered = query.get('registered') === '1';
+
+      try {
+        const response = await fetch('/api/auth/status', { credentials: 'same-origin', cache: 'no-store' });
+        if (response.ok) {
+          const status = await response.json();
+          if (status.authenticated) {
+            currentUser = { email: status.email, fullName: status.fullName || status.email };
+            if (viewingOrders) {
+              mode = 'authenticated';
+              renderMode();
+              document.getElementById('signedInView').hidden = true;
+              document.getElementById('ordersView').hidden = false;
+              await loadOrders();
+              return;
+            }
+            // ?portal=1 means the user explicitly opened the account panel (e.g. clicked the account icon).
+            if (query.get('portal') === '1') {
+              mode = 'authenticated';
+              renderMode();
+              return;
+            }
+            // Otherwise (e.g. post-login or navigating to /account directly), go straight to the store.
+            window.location.replace(returnTo && returnTo !== '/account' && returnTo !== '/account.html' ? returnTo : '/');
+            return;
+          }
+        }
+      } catch (error) {
+        console.error('Authentication status check failed.', error);
+      }
+
+      renderMode();
+      if (justRegistered) {
+        showToast(t('registeredToast'), 'success');
+        document.getElementById('email').focus();
+      }
+    }
+
+    initialize();
+  </script>
+</body>
+</html>

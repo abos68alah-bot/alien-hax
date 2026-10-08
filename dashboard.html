@@ -1,0 +1,761 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#080909" />
+  <title>Admin Dashboard | ALIEN hax</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #080909;
+      --panel: #111210;
+      --panel-raised: #171813;
+      --line: rgba(226, 207, 157, .14);
+      --text: #f3efe5;
+      --muted: #aaa69c;
+      --gold: #d5b66d;
+      --gold-soft: #ead59a;
+      --red: #ff8a7e;
+      font-family: "Bahnschrift", "Segoe UI", sans-serif;
+      color: var(--text);
+      background: var(--bg);
+    }
+
+    * { box-sizing: border-box; }
+    body { min-width: 320px; min-height: 100vh; margin: 0; background: radial-gradient(ellipse at 12% 0, rgba(213,182,109,.1), transparent 38%), var(--bg); }
+    button, input, select, textarea { font: inherit; }
+    button { color: inherit; }
+    .shell { width: min(1200px, calc(100% - 36px)); margin: 0 auto; padding: 28px 0 56px; }
+    .topbar { display: flex; justify-content: space-between; align-items: center; gap: 18px; padding: 14px 18px; border: 1px solid var(--line); border-radius: 16px; background: rgba(17,18,16,.92); }
+    .brand { display: flex; align-items: center; gap: 12px; min-width: 0; }
+    .brand img { width: 44px; height: 44px; object-fit: contain; }
+    .brand strong { display: block; font-size: 16px; }
+    .brand span { color: var(--muted); font-size: 12px; }
+    .top-actions, .tabs { display: flex; align-items: center; gap: 9px; }
+    .button, .tab { min-height: 40px; padding: 9px 13px; border: 1px solid var(--line); border-radius: 9px; background: rgba(255,255,255,.035); cursor: pointer; font-weight: 750; }
+    .button:hover, .tab:hover { border-color: var(--gold); }
+    .button.primary, .tab[aria-selected="true"] { color: #17140c; border-color: var(--gold); background: linear-gradient(135deg, var(--gold), var(--gold-soft)); }
+    .button.danger { color: var(--red); }
+    .button:disabled { opacity: .55; cursor: wait; }
+    h1 { margin: 30px 0 6px; font-size: clamp(27px, 4vw, 38px); }
+    .lede { margin: 0; color: var(--muted); }
+    .stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 24px 0; }
+    .stat, .panel { border: 1px solid var(--line); border-radius: 14px; background: rgba(17,18,16,.9); }
+    .stat { padding: 17px 18px; }
+    .stat span { color: var(--muted); font-size: 13px; }
+    .stat strong { display: block; margin-top: 5px; color: var(--gold-soft); font-size: 25px; }
+    .tabs { margin: 20px 0 14px; }
+    .tab { min-width: 116px; }
+    .panel { padding: 20px; }
+    .panel[hidden], [hidden] { display: none !important; }
+    .panel-heading { display: flex; justify-content: space-between; align-items: start; gap: 18px; margin-bottom: 18px; }
+    h2 { margin: 0; font-size: 21px; }
+    .panel-heading p { margin: 5px 0 0; color: var(--muted); font-size: 13px; }
+    .toolbar { display: flex; gap: 10px; margin-bottom: 14px; }
+    .field { display: grid; gap: 7px; min-width: 0; }
+    .field label { color: var(--muted); font-size: 13px; font-weight: 700; }
+    input, select, textarea { width: 100%; min-height: 42px; padding: 10px 11px; border: 1px solid var(--line); border-radius: 8px; outline: none; background: #0d0e0c; color: var(--text); }
+    textarea { min-height: 88px; resize: vertical; }
+    input:focus, select:focus, textarea:focus { border-color: var(--gold); }
+    input[type="color"] { padding: 4px; min-height: 42px; cursor: pointer; }
+    .toolbar input { max-width: 360px; }
+    .table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; }
+    table { width: 100%; border-collapse: collapse; min-width: 700px; }
+    th, td { padding: 11px 12px; border-bottom: 1px solid var(--line); text-align: start; vertical-align: middle; }
+    th { color: var(--muted); background: rgba(255,255,255,.025); font-size: 12px; white-space: nowrap; }
+    tbody tr:last-child td { border-bottom: 0; }
+    td.product-name { min-width: 220px; font-weight: 750; }
+    td.product-name small { display: block; margin-top: 4px; color: var(--muted); font-weight: 400; }
+    .row-edit { display: flex; align-items: center; gap: 7px; min-width: 142px; }
+    .row-edit input { min-width: 85px; min-height: 36px; padding: 7px; }
+    .row-edit select { min-height: 36px; padding: 6px; }
+    .product-photo { display: grid; justify-items: start; gap: 7px; min-width: 136px; }
+    .product-photo img { width: 58px; height: 44px; border: 1px solid var(--line); border-radius: 6px; background: #0d0e0c; object-fit: contain; }
+    .product-photo .button { min-height: 32px; padding: 6px 9px; font-size: 12px; }
+    .product-photo input { min-width: 175px; min-height: 34px; padding: 5px; font-size: 11px; }
+    .row-actions { display: flex; gap: 7px; }
+    .row-actions .button { min-height: 34px; padding: 6px 9px; font-size: 12px; }
+    .stock { display: inline-block; padding: 5px 8px; border-radius: 999px; color: var(--gold-soft); background: rgba(213,182,109,.1); font-size: 11px; white-space: nowrap; }
+    .stock.out { color: var(--red); background: rgba(255,138,126,.1); }
+    .order-items { min-width: 190px; color: var(--muted); font-size: 12px; line-height: 1.6; }
+    .order-items strong { color: var(--text); }
+    .form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+    .form-grid .wide { grid-column: 1 / -1; }
+    .section-divider { margin: 25px 0 18px; border: 0; border-top: 1px solid var(--line); }
+    .form-actions { display: flex; align-items: center; gap: 12px; margin-top: 16px; }
+    .notice { min-height: 20px; margin: 14px 0 0; color: var(--gold-soft); font-size: 13px; }
+    .notice.error { color: var(--red); }
+    .empty { padding: 24px; color: var(--muted); text-align: center; }
+    .settings-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+    .settings-card { padding: 17px; border: 1px solid var(--line); border-radius: 12px; background: rgba(255,255,255,.018); }
+    .settings-card.credentials-card { grid-column: 1 / -1; }
+    .settings-card h3 { margin: 0 0 14px; font-size: 16px; }
+    .settings-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .settings-fields .wide { grid-column: 1 / -1; }
+    .settings-card .form-actions { justify-content: space-between; }
+    .subtle { color: var(--muted); font-size: 12px; line-height: 1.5; }
+    @media (max-width: 700px) {
+      .shell { width: min(100% - 22px, 1200px); padding-top: 11px; }
+      .topbar { align-items: flex-start; padding: 11px; }
+      .top-actions { gap: 6px; }
+      .top-actions .button { padding: 7px 9px; font-size: 12px; }
+      .stats { gap: 7px; }
+      .stat { padding: 12px; }
+      .stat strong { font-size: 21px; }
+      .panel { padding: 13px; }
+      .form-grid, .settings-grid, .settings-fields { grid-template-columns: 1fr; }
+      .form-grid .wide, .settings-fields .wide { grid-column: auto; }
+      .tabs { overflow-x: auto; }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <div class="brand">
+        <img src="/assets/images/ALIEN.png" alt="" />
+        <div><strong>ALIEN hax</strong><span data-i18n="adminPortal">Admin control center</span></div>
+      </div>
+      <div class="top-actions">
+        <button class="button" id="languageToggle" type="button">العربية</button>
+        <button class="button danger" id="logoutButton" type="button" data-i18n="logout">Sign out</button>
+      </div>
+    </header>
+
+    <h1 data-i18n="dashboardTitle">Dashboard</h1>
+    <p class="lede" data-i18n="dashboardIntro">Manage your catalog and storefront settings.</p>
+
+    <section class="stats" aria-label="Store summary">
+      <div class="stat"><span data-i18n="totalProducts">Total products</span><strong id="totalProducts">—</strong></div>
+      <div class="stat"><span data-i18n="availableProducts">Available</span><strong id="availableProducts">—</strong></div>
+      <div class="stat"><span data-i18n="categories">Categories</span><strong id="categoryCount">—</strong></div>
+    </section>
+
+    <nav class="tabs" role="tablist" aria-label="Dashboard sections">
+      <button class="tab" id="productsTab" type="button" role="tab" aria-selected="true" aria-controls="productsPanel" data-i18n="products">Products</button>
+      <button class="tab" id="ordersTab" type="button" role="tab" aria-selected="false" aria-controls="ordersPanel" data-i18n="orders">Orders</button>
+      <button class="tab" id="settingsTab" type="button" role="tab" aria-selected="false" aria-controls="settingsPanel" data-i18n="settings">Store settings</button>
+      <button class="tab" id="reviewsTab" type="button" role="tab" aria-selected="false" aria-controls="reviewsPanel" data-i18n="reviews">Reviews</button>
+    </nav>
+
+    <section class="panel" id="productsPanel" role="tabpanel" aria-labelledby="productsTab">
+      <div class="panel-heading">
+        <div><h2 data-i18n="catalogTitle">Product catalog</h2><p data-i18n="catalogIntro">Update prices, visibility, and photos, or add and remove products.</p></div>
+      </div>
+      <div class="toolbar">
+        <input id="productSearch" type="search" data-i18n-placeholder="searchProducts" placeholder="Search products..." />
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr>
+            <th data-i18n="product">Product</th><th data-i18n="category">Category</th><th data-i18n="storePrice">Store price (USD)</th><th data-i18n="stockStatus">Stock status</th><th data-i18n="visibility">Visibility</th><th data-i18n="photo">Photo</th><th data-i18n="actions">Actions</th>
+          </tr></thead>
+          <tbody id="productRows"><tr><td class="empty" colspan="7">Loading…</td></tr></tbody>
+        </table>
+      </div>
+      <p class="notice" id="productNotice" role="status" aria-live="polite"></p>
+
+      <hr class="section-divider" />
+      <div class="panel-heading">
+        <div><h2 data-i18n="addProduct">Add a product</h2><p data-i18n="addProductIntro">The fixed store price is the price customers see at checkout.</p></div>
+      </div>
+      <form id="addProductForm">
+        <div class="form-grid">
+          <div class="field"><label for="newName" data-i18n="name">Product name</label><input id="newName" name="name" maxlength="100" required /></div>
+          <div class="field"><label for="newCategory" data-i18n="category">Category</label><input id="newCategory" name="category" maxlength="50" required /></div>
+          <div class="field"><label for="newStorePrice" data-i18n="storePrice">Store price (USD)</label><input id="newStorePrice" name="storePrice" type="number" min="0" max="100000000" step="0.01" required /></div>
+          <div class="field"><label for="newBasePrice" data-i18n="basePriceOptional">Base price (optional)</label><input id="newBasePrice" name="basePrice" type="number" min="0" max="100000000" step="0.01" /></div>
+          <div class="field"><label for="newDuration" data-i18n="duration">Access duration</label><select id="newDuration" name="duration"><option value="" data-i18n="none">None</option><option value="24-hours">24 hours</option><option value="7-days">7 days</option><option value="30-days">30 days</option></select></div>
+          <div class="field"><label for="newBilling" data-i18n="billingPeriod">Billing period</label><select id="newBilling" name="billingPeriod"><option value="" data-i18n="oneTimeOrNone">One-time / none</option><option value="week" data-i18n="weekly">Weekly</option><option value="permanent" data-i18n="permanent">Permanent</option></select></div>
+          <div class="field"><label for="newStatus" data-i18n="stockStatus">Stock status</label><select id="newStatus" name="status"><option value="in-stock" data-i18n="inStock">In stock</option><option value="out-of-stock" data-i18n="outOfStock">Out of stock</option></select></div>
+          <div class="field"><label for="newIcon" data-i18n="iconOptional">Card label (optional)</label><input id="newIcon" name="icon" maxlength="24" /></div>
+          <div class="field wide"><label for="newDescription" data-i18n="description">Description</label><textarea id="newDescription" name="description" maxlength="2000"></textarea></div>
+          <div class="field wide"><label for="newImage" data-i18n="imageOptional">Product image (optional, max 8 MB)</label><input id="newImage" name="image" type="file" accept="image/jpeg,image/png,image/gif,image/webp" /></div>
+        </div>
+        <div class="form-actions"><button class="button primary" type="submit" data-i18n="saveProduct">Add product</button><span class="subtle" data-i18n="imageHint">JPG, PNG, GIF, or WebP.</span></div>
+      </form>
+      <p class="notice" id="addNotice" role="status" aria-live="polite"></p>
+    </section>
+
+    <section class="panel" id="ordersPanel" role="tabpanel" aria-labelledby="ordersTab" hidden>
+      <div class="panel-heading"><div><h2 data-i18n="ordersTitle">Orders</h2><p data-i18n="ordersIntro">Confirm payment only after verifying the transfer proof with your payment provider.</p></div><button class="button" id="refreshOrders" type="button" data-i18n="refresh">Refresh</button></div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr>
+            <th data-i18n="orderNumber">Order number</th><th data-i18n="customer">Customer</th><th data-i18n="items">Products / quantity</th><th data-i18n="orderTotal">Total (USD)</th><th data-i18n="orderDate">Date and time</th><th data-i18n="orderStatus">Order status</th><th data-i18n="emailStatus">Confirmation email</th><th data-i18n="actions">Actions</th>
+          </tr></thead>
+          <tbody id="orderRows"><tr><td class="empty" colspan="8">Loading…</td></tr></tbody>
+        </table>
+      </div>
+      <p class="notice" id="orderNotice" role="status" aria-live="polite"></p>
+    </section>
+
+    <section class="panel" id="settingsPanel" role="tabpanel" aria-labelledby="settingsTab" hidden>
+      <div class="panel-heading"><div><h2 data-i18n="settingsTitle">Store settings</h2><p data-i18n="settingsIntro">These settings are applied to the storefront.</p></div></div>
+      <div class="settings-grid">
+        <form class="settings-card credentials-card" id="adminCredentialsForm">
+          <h3 data-i18n="adminCredentialsTitle">Admin login and password</h3>
+          <p class="subtle" data-i18n="adminCredentialsIntro">Change the credentials used to sign in to this dashboard.</p>
+          <div class="settings-fields">
+            <div class="field"><label for="currentAdminUsername" data-i18n="currentUsername">Current username</label><input id="currentAdminUsername" type="text" autocomplete="username" readonly required /></div>
+            <div class="field"><label for="currentAdminPassword" data-i18n="currentPassword">Current password</label><input id="currentAdminPassword" type="password" autocomplete="current-password" required /></div>
+            <div class="field"><label for="newAdminUsername" data-i18n="newUsername">New username</label><input id="newAdminUsername" type="text" minlength="3" maxlength="64" pattern="(?:[A-Za-z0-9._]|-){3,64}" autocomplete="username" value="abosalah" required /></div>
+            <div class="field"><label for="newAdminPassword" data-i18n="newPassword">New password</label><input id="newAdminPassword" type="password" minlength="10" maxlength="1024" autocomplete="new-password" required /></div>
+            <div class="field"><label for="confirmAdminPassword" data-i18n="confirmNewPassword">Confirm new password</label><input id="confirmAdminPassword" type="password" minlength="10" maxlength="1024" autocomplete="new-password" required /></div>
+          </div>
+          <div class="form-actions"><button class="button primary" type="submit" data-i18n="updateAdminCredentials">Update login</button></div>
+          <p class="notice" id="adminCredentialsNotice" role="status" aria-live="polite"></p>
+        </form>
+        <form class="settings-card" id="pricingForm">
+          <h3 data-i18n="pricingTitle">Price conversion</h3>
+          <div class="field"><label for="priceDivisor" data-i18n="priceDivisor">Base price divisor</label><input id="priceDivisor" name="divisor" type="number" min="0.01" max="10000" step="0.01" required /><span class="subtle" data-i18n="priceDivisorHint">Used only for products without a fixed store price.</span></div>
+          <div class="form-actions"><button class="button primary" type="submit" data-i18n="saveSettings">Save settings</button><span class="notice" id="pricingNotice" role="status"></span></div>
+        </form>
+        <form class="settings-card" id="contactsForm">
+          <h3 data-i18n="supportLinks">Support links</h3>
+          <div class="settings-fields">
+            <div class="field wide"><label for="discordUrl">Discord URL</label><input id="discordUrl" name="discord" type="url" pattern="https://.*" required /></div>
+            <div class="field wide"><label for="telegramUrl">Telegram URL</label><input id="telegramUrl" name="telegram" type="url" pattern="https://.*" required /></div>
+          </div>
+          <div class="form-actions"><button class="button primary" type="submit" data-i18n="saveSettings">Save settings</button><span class="notice" id="contactsNotice" role="status"></span></div>
+        </form>
+        <form class="settings-card" id="themeForm">
+          <h3 data-i18n="themeTitle">Store colors</h3>
+          <div class="settings-fields" id="themeFields"></div>
+          <div class="form-actions"><button class="button primary" type="submit" data-i18n="saveSettings">Save settings</button><span class="notice" id="themeNotice" role="status"></span></div>
+        </form>
+      </div>
+    </section>
+
+    <section class="panel" id="reviewsPanel" role="tabpanel" aria-labelledby="reviewsTab" hidden>
+      <div class="panel-heading">
+        <div><h2 data-i18n="reviewsTitle">Customer Reviews</h2><p data-i18n="reviewsIntro">Approve, reject, edit, or delete customer reviews.</p></div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr>
+            <th data-i18n="rName">Name</th>
+            <th data-i18n="rRating">Rating</th>
+            <th data-i18n="rTitle">Title</th>
+            <th data-i18n="rStatus">Status</th>
+            <th data-i18n="rPhoto">Photo</th>
+            <th data-i18n="actions">Actions</th>
+          </tr></thead>
+          <tbody id="reviewRows"><tr><td class="empty" colspan="6">Loading...</td></tr></tbody>
+        </table>
+      </div>
+      <p class="notice" id="reviewNotice" role="status" aria-live="polite"></p>
+    </section>
+  </main>
+
+  <script>
+    const translations = {
+      en: {
+        adminPortal: 'Admin control center', logout: 'Sign out', dashboardTitle: 'Dashboard',
+        dashboardIntro: 'Manage your catalog and storefront settings.', totalProducts: 'Total products',
+        availableProducts: 'Available', categories: 'Categories', products: 'Products', orders: 'Orders', settings: 'Store settings',
+        ordersTitle: 'Orders', ordersIntro: 'Confirm payment only after verifying the transfer proof with your payment provider.',
+        refresh: 'Refresh', orderNumber: 'Order number', customer: 'Customer', items: 'Products / quantity',
+        orderTotal: 'Total (USD)', orderDate: 'Date and time', orderStatus: 'Order status',
+        emailStatus: 'Confirmation email', confirmPayment: 'Confirm payment', retryEmail: 'Retry email',
+        adminCredentialsTitle: 'Admin login and password',
+        adminCredentialsIntro: 'Change the credentials used to sign in to this dashboard.',
+        currentUsername: 'Current username', currentPassword: 'Current password',
+        newUsername: 'New username', newPassword: 'New password',
+        confirmNewPassword: 'Confirm new password', updateAdminCredentials: 'Update login',
+        credentialsUpdated: 'Admin login updated successfully.',
+        credentialsMismatch: 'The new passwords do not match.',
+        noOrders: 'No orders yet.', awaitingPayment: 'Awaiting payment confirmation',
+        paymentConfirmed: 'Payment confirmed', emailNotSent: 'Not sent', emailSending: 'Sending',
+        statusAwaitingPayment: 'Awaiting payment confirmation', statusPaymentConfirmed: 'Payment confirmed',
+        emailSent: 'Sent', emailFailed: 'Failed', orderConfirmedEmailSent: 'Payment confirmed and confirmation email sent.',
+        orderConfirmedEmailFailed: 'Payment confirmed, but the confirmation email could not be sent. Check email settings and retry.',
+        emailStillSending: 'Confirmation email is currently being sent.', orderUpdated: 'Order was updated.',
+        customerName: 'Name', color_bg: 'Background',
+        catalogTitle: 'Product catalog', catalogIntro: 'Update prices, visibility, and photos, or add and remove products.',
+        searchProducts: 'Search products...', product: 'Product', category: 'Category',
+        storePrice: 'Store price (USD)', stockStatus: 'Stock status', visibility: 'Visibility',
+        visible: 'Visible', hidden: 'Hidden', hide: 'Hide', show: 'Show', photo: 'Photo',
+        changePhoto: 'Update photo', choosePhoto: 'Choose an image file first.',
+        actions: 'Actions',
+        addProduct: 'Add a product', addProductIntro: 'The fixed store price is the price customers see at checkout.',
+        name: 'Product name', basePriceOptional: 'Base price (optional)', duration: 'Access duration',
+        none: 'None', billingPeriod: 'Billing period', oneTimeOrNone: 'One-time / none', weekly: 'Weekly',
+        permanent: 'Permanent', inStock: 'In stock', outOfStock: 'Out of stock', iconOptional: 'Card label (optional)',
+        description: 'Description', imageOptional: 'Product image (optional, max 8 MB)', saveProduct: 'Add product',
+        imageHint: 'JPG, PNG, GIF, or WebP.', settingsTitle: 'Store settings',
+        settingsIntro: 'These settings are applied to the storefront.', pricingTitle: 'Price conversion',
+        priceDivisor: 'Base price divisor', priceDivisorHint: 'Used only for products without a fixed store price.',
+        saveSettings: 'Save settings', supportLinks: 'Support links', themeTitle: 'Store colors',
+        edit: 'Save', remove: 'Remove', loading: 'Loading…', noProducts: 'No products found.',
+        nameRequired: 'Choose a product name.', saved: 'Saved successfully.', removed: 'Product removed.',
+        confirmRemove: 'Remove this product? This cannot be undone.', requestFailed: 'The request failed.',
+        sessionExpired: 'Your admin session has expired. Sign in again.', color_bg: 'Background',
+        color_primary: 'Primary', color_primary2: 'Secondary', color_primary3: 'Highlight',
+        color_text: 'Text', color_muted: 'Muted text', duration_24: '24 hours',
+        duration_7: '7 days', duration_30: '30 days', duration_none: 'No duration'
+      },
+      ar: {
+        adminPortal: 'مركز تحكم الإدارة', logout: 'تسجيل الخروج', dashboardTitle: 'لوحة التحكم',
+        dashboardIntro: 'إدارة المنتجات وإعدادات المتجر.', totalProducts: 'إجمالي المنتجات',
+        availableProducts: 'متاح', categories: 'الفئات', products: 'المنتجات', orders: 'الطلبات', settings: 'إعدادات المتجر',
+        ordersTitle: 'الطلبات', ordersIntro: 'أكّد الدفع بعد التحقق من إثبات التحويل لدى مزوّد الدفع.',
+        refresh: 'تحديث', orderNumber: 'رقم الطلب', customer: 'العميل', items: 'المنتجات / الكمية',
+        orderTotal: 'الإجمالي (دولار)', orderDate: 'التاريخ والوقت', orderStatus: 'حالة الطلب',
+        emailStatus: 'رسالة التأكيد', confirmPayment: 'تأكيد الدفع', retryEmail: 'إعادة إرسال البريد',
+        adminCredentialsTitle: 'اسم مستخدم وكلمة مرور الإدارة',
+        adminCredentialsIntro: 'غيّر بيانات تسجيل الدخول إلى لوحة التحكم.',
+        currentUsername: 'اسم المستخدم الحالي', currentPassword: 'كلمة المرور الحالية',
+        newUsername: 'اسم المستخدم الجديد', newPassword: 'كلمة المرور الجديدة',
+        confirmNewPassword: 'تأكيد كلمة المرور الجديدة', updateAdminCredentials: 'تحديث بيانات الدخول',
+        credentialsUpdated: 'تم تحديث بيانات دخول الإدارة بنجاح.',
+        credentialsMismatch: 'كلمتا المرور الجديدتان غير متطابقتين.',
+        noOrders: 'لا توجد طلبات بعد.', awaitingPayment: 'بانتظار تأكيد الدفع',
+        paymentConfirmed: 'تم تأكيد الدفع', emailNotSent: 'لم تُرسل', emailSending: 'جارٍ الإرسال',
+        statusAwaitingPayment: 'بانتظار تأكيد الدفع', statusPaymentConfirmed: 'تم تأكيد الدفع',
+        emailSent: 'تم الإرسال', emailFailed: 'فشل الإرسال', orderConfirmedEmailSent: 'تم تأكيد الدفع وإرسال رسالة التأكيد.',
+        orderConfirmedEmailFailed: 'تم تأكيد الدفع لكن تعذر إرسال رسالة التأكيد. تحقق من إعدادات البريد وأعد المحاولة.',
+        emailStillSending: 'جارٍ إرسال رسالة التأكيد الآن.', orderUpdated: 'تم تحديث الطلب.',
+        customerName: 'الاسم', color_bg: 'الخلفية',
+        catalogTitle: 'كتالوج المنتجات', catalogIntro: 'عدّل الأسعار والظهور والصور، أو أضف المنتجات واحذفها.',
+        searchProducts: 'ابحث عن المنتجات...', product: 'المنتج', category: 'الفئة',
+        storePrice: 'سعر المتجر (دولار)', stockStatus: 'حالة المخزون', visibility: 'الظهور',
+        visible: 'ظاهر', hidden: 'مخفي', hide: 'إخفاء', show: 'إظهار', photo: 'الصورة',
+        changePhoto: 'تحديث الصورة', choosePhoto: 'اختر ملف صورة أولاً.',
+        actions: 'إجراءات',
+        addProduct: 'إضافة منتج', addProductIntro: 'السعر الثابت هو السعر الذي يظهر للعميل عند الدفع.',
+        name: 'اسم المنتج', basePriceOptional: 'السعر الأساسي (اختياري)', duration: 'مدة الوصول',
+        none: 'بدون', billingPeriod: 'فترة الفوترة', oneTimeOrNone: 'مرة واحدة / بدون', weekly: 'أسبوعي',
+        permanent: 'دائم', inStock: 'متوفر', outOfStock: 'نفد المخزون', iconOptional: 'عنوان البطاقة (اختياري)',
+        description: 'الوصف', imageOptional: 'صورة المنتج (اختياري، بحد أقصى 8 ميجابايت)', saveProduct: 'إضافة المنتج',
+        imageHint: 'JPG أو PNG أو GIF أو WebP.', settingsTitle: 'إعدادات المتجر',
+        settingsIntro: 'تُطبّق هذه الإعدادات على واجهة المتجر.', pricingTitle: 'تحويل الأسعار',
+        priceDivisor: 'مقسوم السعر الأساسي', priceDivisorHint: 'يُستخدم فقط للمنتجات التي ليس لها سعر ثابت.',
+        saveSettings: 'حفظ الإعدادات', supportLinks: 'روابط الدعم', themeTitle: 'ألوان المتجر',
+        edit: 'حفظ', remove: 'حذف', loading: 'جارٍ التحميل…', noProducts: 'لا توجد منتجات.',
+        nameRequired: 'أدخل اسم المنتج.', saved: 'تم الحفظ بنجاح.', removed: 'تم حذف المنتج.',
+        confirmRemove: 'هل تريد حذف هذا المنتج؟ لا يمكن التراجع عن ذلك.', requestFailed: 'تعذر تنفيذ الطلب.',
+        sessionExpired: 'انتهت جلسة الإدارة. سجّل الدخول مجددًا.', color_bg: 'الخلفية',
+        color_primary: 'اللون الأساسي', color_primary2: 'اللون الثانوي', color_primary3: 'لون التمييز',
+        color_text: 'النص', color_muted: 'النص الثانوي', duration_24: '24 ساعة',
+        duration_7: '7 أيام', duration_30: '30 يومًا', duration_none: 'بدون مدة'
+      }
+    };
+    const themeLabels = ['bg', 'primary', 'primary2', 'primary3', 'text', 'muted'];
+    let language = 'en';
+    let products = [];
+    let orders = [];
+    const productsChannel = 'BroadcastChannel' in window ? new BroadcastChannel('c2k-store-products') : null;
+    const productRows = document.getElementById('productRows');
+    const t = (key) => translations[language][key] || translations.en[key] || key;
+    const escapeHtml = (value) => String(value ?? '').replace(/[&<>"']/g, (character) => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+    })[character]);
+
+    function applyLanguage() {
+      document.documentElement.lang = language;
+      document.documentElement.dir = language === 'ar' ? 'rtl' : 'ltr';
+      document.querySelectorAll('[data-i18n]').forEach((element) => {
+        element.textContent = t(element.dataset.i18n);
+      });
+      document.querySelectorAll('[data-i18n-placeholder]').forEach((element) => {
+        element.placeholder = t(element.dataset.i18nPlaceholder);
+      });
+      document.getElementById('languageToggle').textContent = language === 'ar' ? 'English' : 'العربية';
+      renderProducts();
+    }
+
+    function showNotice(id, message, isError = false) {
+      const notice = document.getElementById(id);
+      notice.textContent = message;
+      notice.classList.toggle('error', isError);
+    }
+
+    async function api(url, options = {}) {
+      const response = await fetch(url, { credentials: 'same-origin', ...options });
+      const result = response.status === 204 ? {} : await response.json();
+      if (response.status === 401) {
+        window.location.replace('/admin-login');
+        throw new Error(t('sessionExpired'));
+      }
+      if (!response.ok) throw new Error(result.error || t('requestFailed'));
+      return result;
+    }
+
+    function productPrice(product) {
+      if (Number.isFinite(product.storePrice)) return Number(product.storePrice).toFixed(2);
+      const divisor = Number(document.getElementById('priceDivisor').value) || 5.2;
+      return Number.isFinite(product.basePrice) ? (product.basePrice / divisor).toFixed(2) : '';
+    }
+
+    function orderDate(value) {
+      const date = new Date(value);
+      return Number.isNaN(date.getTime()) ? '—' : date.toLocaleString(language === 'ar' ? 'ar' : 'en');
+    }
+
+    function renderOrders() {
+      const rows = document.getElementById('orderRows');
+      if (!orders.length) {
+        rows.innerHTML = `<tr><td class="empty" colspan="8">${escapeHtml(t('noOrders'))}</td></tr>`;
+        return;
+      }
+      rows.innerHTML = orders.map((order) => {
+        const emailStatusKey = {
+          not_sent: 'emailNotSent',
+          sending: 'emailSending',
+          sent: 'emailSent',
+          failed: 'emailFailed',
+        }[order.emailStatus] || 'emailNotSent';
+        const canConfirm = order.status === 'Awaiting payment confirmation';
+        const canRetry = order.status === 'Payment confirmed' && order.emailStatus === 'failed';
+        const orderStatusKey = order.status === 'Payment confirmed'
+          ? 'statusPaymentConfirmed'
+          : order.status === 'Awaiting payment confirmation' ? 'statusAwaitingPayment' : null;
+        const orderItems = (order.items || []).map((item) =>
+          `${escapeHtml(item.name)} × ${Number(item.quantity) || 1}`).join('<br>');
+        const actionLabel = canConfirm ? t('confirmPayment') : canRetry ? t('retryEmail') : '—';
+        return `<tr data-order-id="${escapeHtml(order.id)}">
+          <td><strong>${escapeHtml(order.orderNumber)}</strong></td>
+          <td>${escapeHtml(order.customerName)}<small>${escapeHtml(order.customerEmail)}</small></td>
+          <td class="order-items">${orderItems}</td>
+          <td>$${Number(order.total).toFixed(2)}</td>
+          <td>${escapeHtml(orderDate(order.createdAt))}</td>
+          <td>${escapeHtml(orderStatusKey ? t(orderStatusKey) : order.status)}</td>
+          <td><span class="stock${order.emailStatus === 'failed' ? ' out' : ''}">${escapeHtml(t(emailStatusKey))}</span></td>
+          <td>${canConfirm || canRetry ? `<button class="button primary" type="button" data-confirm-order>${escapeHtml(actionLabel)}</button>` : '<span class="subtle">—</span>'}</td>
+        </tr>`;
+      }).join('');
+    }
+
+    function renderProducts() {
+      const query = document.getElementById('productSearch').value.trim().toLowerCase();
+      const filtered = products.filter((product) =>
+        `${product.name} ${product.category} ${product.description || ''}`.toLowerCase().includes(query));
+      if (!filtered.length) {
+        productRows.innerHTML = `<tr><td class="empty" colspan="7">${escapeHtml(t(products.length ? 'noProducts' : 'loading'))}</td></tr>`;
+      } else {
+        productRows.innerHTML = filtered.map((product) => {
+          const durationKey = product.duration === '24-hours' ? 'duration_24'
+            : product.duration === '7-days' ? 'duration_7'
+              : product.duration === '30-days' ? 'duration_30' : 'duration_none';
+          const inStock = product.status !== 'out-of-stock' && product.status !== 'sold';
+          return `<tr data-product-id="${escapeHtml(product.id)}">
+            <td class="product-name">${escapeHtml(product.name)}<small>${escapeHtml(t(durationKey))}</small></td>
+            <td>${escapeHtml(product.category)}</td>
+            <td><div class="row-edit"><span>$</span><input aria-label="${escapeHtml(t('storePrice'))}" type="number" min="0" max="100000000" step="0.01" value="${escapeHtml(productPrice(product))}" data-price /></div></td>
+            <td><select aria-label="${escapeHtml(t('stockStatus'))}" data-status><option value="in-stock" ${inStock ? 'selected' : ''}>${escapeHtml(t('inStock'))}</option><option value="out-of-stock" ${inStock ? '' : 'selected'}>${escapeHtml(t('outOfStock'))}</option></select></td>
+            <td><button class="button${product.hidden ? '' : ' primary'}" type="button" data-toggle-hidden>${escapeHtml(product.hidden ? t('show') : t('hide'))}</button><small class="stock${product.hidden ? ' out' : ''}">${escapeHtml(product.hidden ? t('hidden') : t('visible'))}</small></td>
+            <td><div class="product-photo"><img src="${escapeHtml(product.image || '/assets/images/ALIEN.png')}" alt="" onerror="this.src='/assets/images/ALIEN.png'" /><input type="file" accept="image/jpeg,image/png,image/gif,image/webp" aria-label="${escapeHtml(t('photo'))}" data-image-file /><button class="button" type="button" data-update-image>${escapeHtml(t('changePhoto'))}</button></div></td>
+            <td><div class="row-actions"><button class="button primary" type="button" data-save-product>${escapeHtml(t('edit'))}</button><button class="button danger" type="button" data-delete-product>${escapeHtml(t('remove'))}</button></div></td>
+          </tr>`;
+        }).join('');
+      }
+      document.getElementById('totalProducts').textContent = products.length;
+      document.getElementById('availableProducts').textContent = products.filter((product) => !product.hidden && product.status !== 'out-of-stock' && product.status !== 'sold').length;
+      document.getElementById('categoryCount').textContent = new Set(products.map((product) => product.category)).size;
+    }
+
+    function announceProductUpdate(product) {
+      productsChannel?.postMessage({ type: 'upsert', product });
+    }
+
+    async function loadDashboard() {
+      const [productList, pricing, contacts, theme, orderList, adminCredentials] = await Promise.all([
+        api('/api/products'), api('/api/pricing'), api('/api/contacts'), api('/api/theme'),
+        api('/api/dashboard/orders'), api('/api/admin/credentials')
+      ]);
+      if (!Array.isArray(productList)) throw new Error('Invalid product catalog.');
+      if (!Array.isArray(orderList)) throw new Error('Invalid order list.');
+      if (typeof adminCredentials.username !== 'string') throw new Error('Invalid admin credential settings.');
+      products = productList;
+      orders = orderList;
+      document.getElementById('currentAdminUsername').value = adminCredentials.username;
+      document.getElementById('newAdminUsername').value = adminCredentials.username;
+      document.getElementById('priceDivisor').value = pricing.divisor ?? 5.2;
+      document.getElementById('discordUrl').value = contacts.discord || '';
+      document.getElementById('telegramUrl').value = contacts.telegram || '';
+      document.getElementById('themeFields').innerHTML = themeLabels.map((key) =>
+        `<div class="field"><label for="theme-${key}">${escapeHtml(t(`color_${key}`))}</label><input id="theme-${key}" name="${key}" type="color" value="${/^#[0-9a-f]{6}$/i.test(theme[key] || '') ? theme[key] : '#000000'}" required /></div>`
+      ).join('');
+      renderProducts();
+      renderOrders();
+    }
+
+    document.getElementById('adminCredentialsForm').addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const form = event.currentTarget;
+      const currentPassword = document.getElementById('currentAdminPassword');
+      const newPassword = document.getElementById('newAdminPassword');
+      const confirmPassword = document.getElementById('confirmAdminPassword');
+      if (newPassword.value !== confirmPassword.value) {
+        showNotice('adminCredentialsNotice', t('credentialsMismatch'), true);
+        return;
+      }
+
+      const button = form.querySelector('[type="submit"]');
+      button.disabled = true;
+      try {
+        const result = await api('/api/admin/credentials', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            currentUsername: document.getElementById('currentAdminUsername').value,
+            currentPassword: currentPassword.value,
+            newUsername: document.getElementById('newAdminUsername').value,
+            newPassword: newPassword.value,
+            confirmPassword: confirmPassword.value
+          })
+        });
+        document.getElementById('currentAdminUsername').value = result.username;
+        document.getElementById('newAdminUsername').value = result.username;
+        currentPassword.value = '';
+        newPassword.value = '';
+        confirmPassword.value = '';
+        showNotice('adminCredentialsNotice', t('credentialsUpdated'));
+      } catch (error) {
+        showNotice('adminCredentialsNotice', error.message, true);
+      } finally {
+        button.disabled = false;
+      }
+    });
+
+    document.getElementById('languageToggle').addEventListener('click', () => {
+      language = language === 'en' ? 'ar' : 'en';
+      try { localStorage.setItem('alien-admin-language', language); }
+      catch (error) { console.error('Could not save admin language preference.', error); }
+      applyLanguage();
+      loadDashboard().catch((error) => console.error('Could not refresh dashboard labels.', error));
+    });
+
+    document.querySelectorAll('[role="tab"]').forEach((tab) => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('[role="tab"]').forEach((item) => item.setAttribute('aria-selected', String(item === tab)));
+        document.querySelectorAll('[role="tabpanel"]').forEach((panel) => {
+          panel.hidden = panel.id !== tab.getAttribute('aria-controls');
+        });
+      });
+    });
+
+    document.getElementById('refreshOrders').addEventListener('click', async () => {
+      try {
+        orders = await api('/api/dashboard/orders');
+        renderOrders();
+        showNotice('orderNotice', '');
+      } catch (error) {
+        showNotice('orderNotice', error.message, true);
+      }
+    });
+
+    document.getElementById('orderRows').addEventListener('click', async (event) => {
+      const button = event.target.closest('[data-confirm-order]');
+      if (!button) return;
+      const row = button.closest('tr[data-order-id]');
+      if (!row) return;
+      button.disabled = true;
+      try {
+        const result = await api('/api/dashboard/orders/confirm', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id: row.dataset.orderId })
+        });
+        if (result.order) {
+          orders = orders.map((order) => order.id === result.order.id ? result.order : order);
+        }
+        renderOrders();
+        if (result.emailSent) {
+          showNotice('orderNotice', t('orderConfirmedEmailSent'));
+        } else {
+          showNotice('orderNotice', result.deliveryInProgress
+            ? t('emailStillSending')
+            : result.warning || t('orderConfirmedEmailFailed'), !result.deliveryInProgress);
+        }
+      } catch (error) {
+        showNotice('orderNotice', error.message, true);
+      } finally {
+        button.disabled = false;
+      }
+    });
+
+    document.getElementById('productSearch').addEventListener('input', renderProducts);
+
+    productRows.addEventListener('click', async (event) => {
+      const row = event.target.closest('tr[data-product-id]');
+      if (!row) return;
+      const product = products.find((item) => item.id === row.dataset.productId);
+      if (!product) return;
+      if (event.target.closest('[data-save-product]')) {
+        const price = row.querySelector('[data-price]').value;
+        const status = row.querySelector('[data-status]').value;
+        if (price === '' || !Number.isFinite(Number(price)) || Number(price) < 0) {
+          showNotice('productNotice', t('requestFailed'), true);
+          return;
+        }
+        const button = row.querySelector('[data-save-product]');
+        button.disabled = true;
+        try {
+          const result = await api(`/api/dashboard/products?id=${encodeURIComponent(product.id)}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ storePrice: Number(price), status })
+          });
+          Object.assign(product, result.product);
+          announceProductUpdate(product);
+          renderProducts();
+          showNotice('productNotice', t('saved'));
+        } catch (error) {
+          showNotice('productNotice', error.message, true);
+        } finally {
+          button.disabled = false;
+        }
+      }
+      if (event.target.closest('[data-toggle-hidden]')) {
+        const button = row.querySelector('[data-toggle-hidden]');
+        button.disabled = true;
+        try {
+          const result = await api(`/api/dashboard/products?id=${encodeURIComponent(product.id)}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ hidden: !product.hidden })
+          });
+          Object.assign(product, result.product);
+          announceProductUpdate(product);
+          renderProducts();
+          showNotice('productNotice', t('saved'));
+        } catch (error) {
+          showNotice('productNotice', error.message, true);
+        } finally {
+          button.disabled = false;
+        }
+      }
+      if (event.target.closest('[data-update-image]')) {
+        const input = row.querySelector('[data-image-file]');
+        const file = input.files[0];
+        if (!file) {
+          showNotice('productNotice', t('choosePhoto'), true);
+          return;
+        }
+        const button = row.querySelector('[data-update-image]');
+        const formData = new FormData();
+        formData.append('image', file);
+        button.disabled = true;
+        try {
+          const result = await api(`/api/dashboard/products?id=${encodeURIComponent(product.id)}`, {
+            method: 'POST',
+            body: formData
+          });
+          Object.assign(product, result.product);
+          announceProductUpdate(product);
+          renderProducts();
+          showNotice('productNotice', t('saved'));
+        } catch (error) {
+          showNotice('productNotice', error.message, true);
+        } finally {
+          button.disabled = false;
+        }
+      }
+      if (event.target.closest('[data-delete-product]')) {
+        if (!window.confirm(t('confirmRemove'))) return;
+        try {
+          await api(`/api/dashboard/products?id=${encodeURIComponent(product.id)}`, { method: 'DELETE' });
+          products = products.filter((item) => item.id !== product.id);
+          productsChannel?.postMessage({ type: 'delete', id: product.id });
+          renderProducts();
+          showNotice('productNotice', t('removed'));
+        } catch (error) {
+          showNotice('productNotice', error.message, true);
+        }
+      }
+    });
+
+    document.getElementById('addProductForm').addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const form = event.currentTarget;
+      const submit = form.querySelector('[type="submit"]');
+      const formData = new FormData(form);
+      if (!formData.get('name').trim()) {
+        showNotice('addNotice', t('nameRequired'), true);
+        return;
+      }
+      submit.disabled = true;
+      try {
+        const result = await api('/api/dashboard/products', { method: 'POST', body: formData });
+        products.push(result.product);
+        announceProductUpdate(result.product);
+        renderProducts();
+        form.reset();
+        showNotice('addNotice', t('saved'));
+      } catch (error) {
+        showNotice('addNotice', error.message, true);
+      } finally {
+        submit.disabled = false;
+      }
+    });
+
+    document.getElementById('pricingForm').addEventListener('submit', async (event) => {
+      event.preventDefault();
+      try {
+        const result = await api('/api/dashboard/pricing', {
+          method: 'PUT', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ divisor: Number(document.getElementById('priceDivisor').value) })
+        });
+        document.getElementById('priceDivisor').value = result.divisor;
+        renderProducts();
+        showNotice('pricingNotice', t('saved'));
+      } catch (error) { showNotice('pricingNotice', error.message, true); }
+    });
+
+    document.getElementById('contactsForm').addEventListener('submit', async (event) => {
+      event.preventDefault();
+      try {
+        await api('/api/dashboard/contacts', {
+          method: 'PUT', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            discord: document.getElementById('discordUrl').value,
+            telegram: document.getElementById('telegramUrl').value
+          })
+        });
+        showNotice('contactsNotice', t('saved'));
+      } catch (error) { showNotice('contactsNotice', error.message, true); }
+    });
+
+    document.getElementById('themeForm').addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const theme = Object.fromEntries(themeLabels.map((key) => [key, document.getElementById(`theme-${key}`).value]));
+      try {
+        await api('/api/dashboard/theme', {
+          method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(theme)
+        });
+        showNotice('themeNotice', t('saved'));
+      } catch (error) { showNotice('themeNotice', error.message, true); }
+    });
+
+    document.getElementById('logoutButton').addEventListener('click', async () => {
+      const button = document.getElementById('logoutButton');
+      button.disabled = true;
+      try {
+        await api('/api/admin/logout', { method: 'POST' });
+        window.location.replace('/admin-login');
+      } catch (error) {
+        button.disabled = false;
+        console.error('Could not sign out:', error);
+      }
+    });
+
+    try {
+      const savedLanguage = localStorage.getItem('alien-admin-language');
+      if (savedLanguage === 'ar') language = 'ar';
+    } catch (error) {
+      console.error('Could not load admin language preference.', error);
+    }
+    applyLanguage();
+    loadDashboard().catch((error) => {
+      console.error('Could not load the admin dashboard.', error);
+      showNotice('productNotice', error.message, true);
+      if (error.message !== t('sessionExpired')) {
+        productRows.innerHTML = `<tr><td class="empty" colspan="7">${escapeHtml(error.message)}</td></tr>`;
+      }
+    });
+  </script>
+</body>
+</html>

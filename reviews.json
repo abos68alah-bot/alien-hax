@@ -1,0 +1,32 @@
+[
+    {
+        "id": "fabbaf2a1134c00358af80dcf30faea3",
+        "authorName": "Test",
+        "rating": 5,
+        "title": "Test Title",
+        "body": "Test Body",
+        "image": null,
+        "status": "pending",
+        "createdAt": "2026-10-08T10:36:44+00:00"
+    },
+    {
+        "id": "8b19bd8259e6c17e8d364518ba931bab",
+        "authorName": "عبدالله",
+        "rating": 5,
+        "title": "خدمه ممتازه",
+        "body": "الخدمة ممتازة جدًا، والدعم سريع ومتعاون، والتعامل كان احترافيًا. تجربة رائعة وأنصح بها بشدة.",
+        "image": null,
+        "status": "pending",
+        "createdAt": "2026-10-08T10:43:16+00:00"
+    },
+    {
+        "id": "f4d4e2a4e64f82cbaad49cc15ac508ea",
+        "authorName": "عبدالله",
+        "rating": 5,
+        "title": "خدمه ممتازه",
+        "body": "الخدمة ممتازة جدًا، والدعم سريع ومتعاون، والتعامل كان احترافيًا. تجربة رائعة وأنصح بها بشدة.",
+        "image": null,
+        "status": "pending",
+        "createdAt": "2026-10-08T10:48:45+00:00"
+    }
+]

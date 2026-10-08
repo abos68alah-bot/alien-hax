@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#080b12" />
+  <title>Create Account | ALIEN hax</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #080b12;
+      --panel: #111722;
+      --line: rgba(255,255,255,.13);
+      --text: #f8f5ec;
+      --muted: #c2bca8;
+      --gold: #f4c20d;
+      --gold-light: #ffd43b;
+      --error: #ff9188;
+      --success: #a3e635;
+      font-family: "Bahnschrift", "Segoe UI", sans-serif;
+      color: var(--text);
+      background: var(--bg);
+    }
+    * { box-sizing: border-box; }
+    body {
+      min-height: 100vh;
+      margin: 0;
+      display: grid;
+      place-items: center;
+      padding: 22px;
+      background:
+        radial-gradient(ellipse at 16% 10%, rgba(244,194,13,.12), transparent 34%),
+        radial-gradient(ellipse at 86% 92%, rgba(60,131,246,.1), transparent 35%),
+        var(--bg);
+    }
+    .card {
+      width: min(460px, 100%);
+      padding: clamp(25px, 7vw, 42px);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: linear-gradient(145deg, rgba(17,23,34,.98), rgba(10,13,20,.99));
+      box-shadow: 0 35px 100px rgba(0,0,0,.48);
+      position: relative;
+    }
+    .brand { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; }
+    .brand img { width: 48px; height: 48px; object-fit: contain; }
+    .brand strong { display: block; font-size: 18px; letter-spacing: .04em; }
+    .brand span { color: var(--muted); font-size: 12px; }
+    .eyebrow { margin: 0 0 8px; color: var(--gold-light); font-size: 11px; font-weight: 850; letter-spacing: .16em; text-transform: uppercase; }
+    h1 { margin: 0; font-size: clamp(26px, 6vw, 34px); }
+    .intro { margin: 9px 0 22px; color: var(--muted); line-height: 1.55; font-size: 14px; }
+    button, input { font: inherit; }
+    button { color: inherit; }
+    .submit {
+      min-height: 44px;
+      width: 100%;
+      margin-top: 14px;
+      border: 1px solid transparent;
+      border-radius: 9px;
+      background: linear-gradient(135deg, var(--gold), var(--gold-light));
+      color: #14120b;
+      cursor: pointer;
+      font-weight: 800;
+      transition: all .2s ease;
+    }
+    .submit:hover { filter: brightness(1.08); transform: translateY(-1px); }
+    .submit:disabled { opacity: .6; cursor: wait; transform: none; }
+    .field { display: grid; gap: 7px; margin: 15px 0; }
+    label { color: var(--muted); font-size: 13px; font-weight: 750; }
+    input {
+      width: 100%;
+      min-height: 46px;
+      padding: 11px 12px;
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      outline: none;
+      background: rgba(4,7,12,.72);
+      color: var(--text);
+      transition: border-color .2s ease;
+    }
+    input:focus { border-color: var(--gold); }
+    .hint { margin: -4px 0 12px; color: var(--muted); font-size: 12px; }
+    .message { min-height: 22px; margin: 12px 0 0; color: var(--error); font-size: 13px; line-height: 1.5; }
+    .back-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; font-size: 13px; }
+    .back-nav a { color: var(--gold-light); font-weight: 750; text-decoration: none; }
+    .back-nav a:hover { text-decoration: underline; }
+
+    /* Toast Notifications */
+    .toast-container {
+      position: fixed;
+      top: 24px;
+      right: 24px;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-width: 380px;
+      width: calc(100% - 48px);
+      pointer-events: none;
+    }
+    [dir="rtl"] .toast-container { right: auto; left: 24px; }
+    .toast {
+      padding: 14px 18px;
+      border-radius: 12px;
+      background: rgba(17, 23, 34, 0.96);
+      border: 1px solid var(--success);
+      box-shadow: 0 15px 40px rgba(0,0,0,0.6), 0 0 25px rgba(163,230,53,0.2);
+      color: var(--text);
+      font-size: 13px;
+      font-weight: 750;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      backdrop-filter: blur(12px);
+      animation: toastIn .35s cubic-bezier(.16,1,.3,1) forwards;
+      pointer-events: auto;
+    }
+    @keyframes toastIn { from { opacity: 0; transform: translateY(-12px) scale(.96); } to { opacity: 1; transform: translateY(0) scale(1); } }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .card { animation: appear .35s ease-out both; }
+      @keyframes appear { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    }
+  </style>
+</head>
+<body>
+  <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+  <main class="card">
+    <div class="brand">
+      <img src="/assets/images/ALIEN.png" alt="ALIEN hax" />
+      <div><strong>ALIEN hax</strong><span data-en="Customer account" data-ar="حساب العميل">Customer account</span></div>
+    </div>
+    <p class="eyebrow" data-en="SECURE PORTAL" data-ar="بوابة آمنة">SECURE PORTAL</p>
+    
+    <h1 id="formTitle">Create account</h1>
+    <p class="intro" id="formIntro">Create your account, then sign in to continue.</p>
+
+    <!-- Create Account Form -->
+    <form id="registerForm" novalidate>
+      <div class="field">
+        <label for="fullName">Full name</label>
+        <input id="fullName" name="fullName" type="text" autocomplete="name" maxlength="100" required />
+      </div>
+
+      <div class="field">
+        <label for="email">Email address</label>
+        <input id="email" name="email" type="email" inputmode="email" autocomplete="email" maxlength="254" required />
+      </div>
+
+      <div class="field">
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" autocomplete="new-password" required />
+      </div>
+
+      <div class="field">
+        <label for="confirmPassword">Confirm password</label>
+        <input id="confirmPassword" name="confirmPassword" type="password" autocomplete="new-password" required />
+      </div>
+
+      <p class="hint">Password must contain at least 10 characters.</p>
+
+      <button class="submit" id="submitButton" type="submit">Create account</button>
+      <p class="message" id="message" role="alert" aria-live="polite"></p>
+    </form>
+
+    <div class="back-nav">
+      <a href="/account" data-en="Already have an account? Sign in" data-ar="لديك حساب بالفعل؟ سجّل الدخول">Already have an account? Sign in</a>
+      <a href="/" data-en="Back to store" data-ar="العودة إلى المتجر">Back to store</a>
+    </div>
+  </main>
+
+  <script>
+    const copy = {
+      en: {
+        creating: 'Creating account…',
+        existing: 'An account with this email already exists. Sign in instead.',
+        passwordLength: 'Choose a password with at least 10 characters.',
+        mismatch: 'Passwords do not match.',
+        generic: 'We could not complete your request. Please try again.'
+      },
+      ar: {
+        creating: 'جارٍ إنشاء الحساب…',
+        existing: 'يوجد حساب بهذا البريد بالفعل. سجّل الدخول بدلًا من ذلك.',
+        passwordLength: 'اختر كلمة مرور لا تقل عن 10 أحرف.',
+        mismatch: 'كلمتا المرور غير متطابقتين.',
+        generic: 'تعذر إكمال الطلب. حاول مرة أخرى.'
+      }
+    };
+    let language = 'en';
+    const form = document.getElementById('registerForm');
+    const message = document.getElementById('message');
+    const t = (key) => copy[language][key] || copy.en[key] || key;
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      message.textContent = '';
+      const fullName = document.getElementById('fullName').value.trim();
+      const email = document.getElementById('email').value.trim().toLowerCase();
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+
+      if (!fullName) {
+        message.textContent = 'Please enter your full name.';
+        return;
+      }
+      if (!email || !email.includes('@')) {
+        message.textContent = 'Please enter a valid email address.';
+        return;
+      }
+      if (password.length < 10) {
+        message.textContent = t('passwordLength');
+        return;
+      }
+      if (password !== confirmPassword) {
+        message.textContent = t('mismatch');
+        return;
+      }
+
+      const button = document.getElementById('submitButton');
+      button.disabled = true;
+      button.textContent = t('creating');
+
+      try {
+        const response = await fetch('/api/auth/register', {
+          method: 'POST',
+          credentials: 'same-origin',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ fullName, email, password })
+        });
+        const result = await response.json();
+        if (!response.ok) {
+          message.textContent = result.error === 'An account with this email already exists. Sign in instead.' ? t('existing') : (result.error || t('generic'));
+          return;
+        }
+
+        try {
+          sessionStorage.removeItem('alien-pending-purchase');
+        } catch (error) {
+          console.error('Could not clear the pending purchase after account creation.', error);
+        }
+        window.location.replace('/account?registered=1&portal=1');
+
+      } catch (error) {
+        console.error('Registration failed', error);
+        message.textContent = t('generic');
+      } finally {
+        button.disabled = false;
+        button.textContent = 'Create account';
+      }
+    });
+
+    try {
+      const savedLanguage = localStorage.getItem('alien-customer-language');
+      if (savedLanguage === 'ar') language = 'ar';
+    } catch (e) {}
+    const query = new URLSearchParams(location.search);
+  </script>
+</body>
+</html>

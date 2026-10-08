@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0a0a0a" />
+  <title>Admin Sign In | ALIEN hax</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #080909;
+      --panel: #111210;
+      --line: rgba(226, 207, 157, .14);
+      --text: #f3efe5;
+      --muted: #aaa69c;
+      --yellow: #d5b66d;
+      --cyan: #ead59a;
+      --red: #ff8a7e;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 28px;
+      overflow-x: hidden;
+      background:
+        radial-gradient(ellipse at 17% 12%, rgba(213,182,109,.13), transparent 31%),
+        radial-gradient(ellipse at 87% 88%, rgba(213,182,109,.12), transparent 34%),
+        var(--bg);
+      background-image:
+        radial-gradient(ellipse at 17% 12%, rgba(213,182,109,.13), transparent 31%),
+        radial-gradient(ellipse at 87% 88%, rgba(213,182,109,.12), transparent 34%),
+        linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+      background-size: auto, auto, 44px 44px, 44px 44px;
+      color: var(--text);
+      font-family: "Bahnschrift", "Segoe UI", sans-serif;
+    }
+
+    .login-shell {
+      width: min(1000px, 100%);
+      min-height: 590px;
+      display: grid;
+      grid-template-columns: 1.04fr .96fr;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,.13);
+      border-radius: 24px;
+      background: linear-gradient(145deg, rgba(17,17,19,.98), rgba(10,10,10,.99));
+      box-shadow: 0 40px 120px rgba(0,0,0,.58), 0 0 70px rgba(213,182,109,.06);
+      animation: appear .55s cubic-bezier(.2,.8,.2,1) both;
+      position: relative;
+    }
+
+    @keyframes appear {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .brand-panel {
+      position: relative;
+      isolation: isolate;
+      min-height: 590px;
+      padding: 42px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      background:
+        radial-gradient(circle at 50% 48%, rgba(213,182,109,.12), transparent 34%),
+        linear-gradient(145deg, rgba(17,17,19,.45), rgba(10,10,10,.96)),
+        #17160f;
+      border-right: 1px solid var(--line);
+      overflow: hidden;
+    }
+    [dir="rtl"] .brand-panel { border-right: 0; border-left: 1px solid var(--line); }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 20px;
+      font-weight: 900;
+      letter-spacing: .04em;
+      position: relative;
+      z-index: 2;
+    }
+
+    .brand-name { color: var(--text); }
+    .brand-name span { color: var(--yellow); }
+    .brand-art {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+    }
+    .brand-art::before,
+    .brand-art::after {
+      content: "";
+      position: absolute;
+      width: min(72%, 370px);
+      aspect-ratio: 1;
+      border: 1px solid rgba(234,213,154,.23);
+      border-radius: 50%;
+      box-shadow: 0 0 45px rgba(234,213,154,.08), inset 0 0 45px rgba(234,213,154,.05);
+      animation: orbit 22s linear infinite;
+    }
+    .brand-art::after {
+      width: min(57%, 295px);
+      border-color: rgba(213,182,109,.35);
+      box-shadow: 0 0 50px rgba(213,182,109,.09), inset 0 0 40px rgba(213,182,109,.045);
+      animation-direction: reverse;
+      animation-duration: 17s;
+    }
+    @keyframes orbit { to { transform: rotate(360deg); } }
+    .orbit-track {
+      position: absolute;
+      width: min(82%, 420px);
+      aspect-ratio: 1;
+      border: 1px dashed rgba(255,255,255,.12);
+      border-radius: 50%;
+      transform: rotate(-28deg) scaleY(.48);
+    }
+    .orbit-track::after {
+      content: "";
+      position: absolute;
+      top: 12%;
+      left: 13%;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--yellow);
+      box-shadow: 0 0 18px var(--yellow);
+    }
+    .alien-logo-frame {
+      width: 218px;
+      max-width: 70%;
+      aspect-ratio: 1;
+      display: grid;
+      place-items: center;
+      position: relative;
+      z-index: 1;
+    }
+    .alien-logo {
+      width: auto;
+      height: auto;
+      max-width: 100%;
+      align-self: center;
+      justify-self: center;
+      object-fit: contain;
+      object-position: center;
+    }
+    .brand-footer {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      color: #bbc5cc;
+      font-size: 11px;
+      letter-spacing: .17em;
+      text-transform: uppercase;
+    }
+    .brand-footer::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--cyan);
+      box-shadow: 0 0 14px var(--cyan);
+    }
+
+    .form-panel {
+      position: relative;
+      display: flex;
+      align-items: center;
+      padding: clamp(30px, 5vw, 58px);
+      background:
+        radial-gradient(ellipse at 90% 8%, rgba(213,182,109,.055), transparent 36%),
+        rgba(10,11,10,.55);
+    }
+
+    .language-toggle {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      min-width: 82px;
+      min-height: 38px;
+      padding: 0 14px;
+      border: 1px solid rgba(255,255,255,.13);
+      border-radius: 999px;
+      background: rgba(255,255,255,.035);
+      color: #d9dedf;
+      font: inherit;
+      font-size: 13px;
+      font-weight: 750;
+      cursor: pointer;
+      transition: border-color .2s ease, color .2s ease, background .2s ease;
+    }
+    .language-toggle:hover { border-color: rgba(213,182,109,.55); color: var(--yellow); background: rgba(213,182,109,.07); }
+    [dir="rtl"] .language-toggle { right: auto; left: 20px; }
+
+    form { width: 100%; }
+    .form-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 35px;
+    }
+    .form-brand-mark-frame { width: 42px; height: 42px; flex: 0 0 42px; display: grid; place-items: center; }
+    .form-brand-mark { width: auto; height: auto; max-width: 100%; object-fit: contain; object-position: center; }
+    .form-brand-copy { display: grid; gap: 3px; }
+    .form-brand-copy strong { font-size: 14px; letter-spacing: .08em; }
+    .form-brand-copy span { color: var(--muted); font-size: 11px; letter-spacing: .13em; text-transform: uppercase; }
+    .form-heading { margin-bottom: 28px; }
+    .form-heading h1 { margin: 0; font-size: clamp(26px, 3vw, 32px); letter-spacing: -.025em; }
+    .form-heading::after {
+      content: "";
+      display: block;
+      width: 44px;
+      height: 3px;
+      margin-top: 13px;
+      border-radius: 4px;
+      background: linear-gradient(90deg, var(--yellow), var(--cyan));
+    }
+    label { display: block; margin: 18px 0 8px; color: #d8dee4; font-size: 13px; font-weight: 650; }
+
+    input {
+      width: 100%;
+      height: 50px;
+      padding: 0 15px;
+      border: 1px solid rgba(255,255,255,.11);
+      border-radius: 11px;
+      background: rgba(10,10,10,.55);
+      color: var(--text);
+      font: inherit;
+      outline: none;
+      transition: border-color .2s ease, box-shadow .2s ease, background .2s ease;
+    }
+    input[type="text"], input[type="password"] { direction: ltr; text-align: left; }
+
+    input:focus { border-color: rgba(234,213,154,.72); background: rgba(17,17,19,.82); box-shadow: 0 0 0 4px rgba(234,213,154,.09), 0 0 25px rgba(234,213,154,.05); }
+    .password-wrap { position: relative; }
+    .password-wrap input { padding-right: 50px; }
+
+    .visibility-toggle {
+      position: absolute;
+      top: 50%;
+      right: 7px;
+      width: 36px;
+      height: 36px;
+      transform: translateY(-50%);
+      display: grid;
+      place-items: center;
+      border: 0;
+      border-radius: 8px;
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+    }
+
+    .visibility-toggle:hover { color: var(--yellow); background: rgba(213,182,109,.08); }
+    .eye-icon { width: 19px; height: 13px; border: 1.7px solid currentColor; border-radius: 70% 30%; transform: rotate(0deg); position: relative; }
+    .eye-icon::after { content: ""; width: 5px; height: 5px; border: 1.5px solid currentColor; border-radius: 50%; position: absolute; left: 5px; top: 2px; }
+
+    .submit-button {
+      width: 100%;
+      height: 50px;
+      margin-top: 28px;
+      border: 0;
+      border-radius: 11px;
+      background: linear-gradient(100deg, #c5a45d, #ead59a 52%, #f3efe5);
+      color: #11140f;
+      font: inherit;
+      font-weight: 850;
+      cursor: pointer;
+      box-shadow: 0 10px 30px rgba(213,182,109,.15);
+      transition: filter .18s ease, transform .18s ease, box-shadow .18s ease;
+    }
+
+    .submit-button:hover { filter: brightness(1.08); transform: translateY(-2px); box-shadow: 0 14px 34px rgba(213,182,109,.23); }
+    .submit-button:disabled { opacity: .65; cursor: wait; transform: none; }
+    .message { min-height: 20px; margin: 14px 0 0; color: var(--red); font-size: 12px; line-height: 1.5; }
+    .form-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 21px;
+    }
+    .security-note { display: flex; align-items: center; gap: 7px; color: var(--muted); font-size: 11px; }
+    .security-note svg { width: 14px; height: 14px; color: var(--cyan); }
+    .back-link { color: #c5cbd1; text-decoration: none; font-size: 12px; transition: color .18s ease; }
+    .back-link:hover { color: var(--yellow); }
+
+    @media(max-width: 680px) {
+      body { padding: 14px; }
+      .login-shell { min-height: auto; max-width: 460px; grid-template-columns: 1fr; border-radius: 20px; }
+      .brand-panel { min-height: 190px; padding: 24px; border-right: 0; border-bottom: 1px solid var(--line); }
+      [dir="rtl"] .brand-panel { border-left: 0; }
+      .brand-art { inset: 22px 0 4px; }
+      .brand-art::before { width: 152px; }
+      .brand-art::after { width: 120px; }
+      .orbit-track { width: 180px; }
+      .alien-logo-frame { width: 116px; }
+      .brand-footer { font-size: 9px; }
+      .form-panel { padding: 34px 25px 28px; }
+      .form-brand { margin-bottom: 27px; }
+      .language-toggle { top: 16px; right: 16px; }
+      [dir="rtl"] .language-toggle { left: 16px; }
+    }
+
+    @media(prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <main class="login-shell">
+    <section class="brand-panel" aria-label="ALIEN hax">
+      <div class="brand">
+        <span class="brand-name">ALIEN <span>hax</span></span>
+      </div>
+      <div class="brand-art" aria-hidden="true">
+        <div class="orbit-track"></div>
+        <span class="alien-logo-frame"><img class="alien-logo" src="/assets/images/ALIEN.png" alt="" onerror="this.hidden=true" /></span>
+      </div>
+      <div class="brand-footer" data-i18n="brandFooter">ALIEN HAX · CONTROL CENTER</div>
+    </section>
+
+    <section class="form-panel">
+      <button class="language-toggle" id="languageToggle" type="button" aria-label="Change language to Arabic">العربية</button>
+      <form id="loginForm">
+        <div class="form-brand">
+          <span class="form-brand-mark-frame"><img class="form-brand-mark" src="/assets/images/ALIEN.png" alt="ALIEN hax logo" onerror="this.hidden=true" /></span>
+          <div class="form-brand-copy">
+            <strong>ALIEN <span style="color:var(--yellow)">hax</span></strong>
+            <span data-i18n="securePortal">Secure admin portal</span>
+          </div>
+        </div>
+        <div class="form-heading">
+          <h1 data-i18n="loginTitle">Admin Login</h1>
+        </div>
+
+        <label for="username" data-i18n="username">Username</label>
+        <input id="username" name="username" type="text" value="abosalah" autocomplete="username" required />
+
+        <label for="password" data-i18n="password">Password</label>
+        <div class="password-wrap">
+          <input id="password" name="password" type="password" autocomplete="current-password" required />
+          <button class="visibility-toggle" id="togglePassword" type="button" aria-label="Show password" aria-pressed="false" title="Show password">
+            <span class="eye-icon" aria-hidden="true"></span>
+          </button>
+        </div>
+
+        <button class="submit-button" id="submitButton" type="submit" data-i18n="signIn">Sign in to dashboard</button>
+        <p class="message" id="loginMessage" role="alert" aria-live="polite"></p>
+        <div class="form-bottom">
+          <span class="security-note">
+            <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4 7V5a4 4 0 1 1 8 0v2M3 7h10v7H3V7Z" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="m6.5 10 1 1 2-2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span data-i18n="secureConnectionText">Protected sign-in</span>
+          </span>
+          <a class="back-link" href="/" data-i18n="backToStorefront">Back to storefront</a>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <script>
+    const LANGUAGE_STORAGE_KEY = 'alien-admin-language';
+    const LOGIN_TRANSLATIONS = {
+      en: {
+        brandFooter: 'ALIEN HAX · CONTROL CENTER', securePortal: 'Secure admin portal',
+        loginTitle: 'Admin Login', secureConnection: 'Protected sign-in',
+        secureConnectionText: 'Protected sign-in',
+        username: 'Username', password: 'Password', signIn: 'Sign in to dashboard',
+        signingIn: 'Signing in...', backToStorefront: 'Back to storefront',
+        setupOnlyLocal: 'Initial setup is only available from this computer.',
+        languageArabic: 'العربية', languageEnglish: 'English',
+        changeLanguageArabic: 'Change language to Arabic', changeLanguageEnglish: 'Change language to English',
+        passwordShow: 'Show password', passwordHide: 'Hide password',
+        requestFailed: 'Request failed ({status})',
+        noPassword: 'Set ALIEN_ADMIN_PASSWORD in the PHP hosting environment before signing in.',
+        incorrectCredentials: 'Username or password is incorrect.'
+      },
+      ar: {
+        brandFooter: 'ALIEN HAX · مركز التحكم', securePortal: 'بوابة المسؤول الآمنة',
+        loginTitle: 'تسجيل دخول المسؤول', secureConnection: 'تسجيل دخول محمي',
+        secureConnectionText: 'تسجيل دخول محمي',
+        username: 'اسم المستخدم', password: 'كلمة المرور', signIn: 'تسجيل الدخول إلى لوحة التحكم',
+        signingIn: 'جارٍ تسجيل الدخول...', backToStorefront: 'العودة إلى المتجر',
+        setupOnlyLocal: 'الإعداد الأولي متاح من هذا الكمبيوتر فقط.',
+        languageArabic: 'العربية', languageEnglish: 'English',
+        changeLanguageArabic: 'تغيير اللغة إلى العربية', changeLanguageEnglish: 'Change language to English',
+        passwordShow: 'إظهار كلمة المرور', passwordHide: 'إخفاء كلمة المرور',
+        requestFailed: 'فشل الطلب ({status})',
+        noPassword: 'اضبط ALIEN_ADMIN_PASSWORD في إعدادات استضافة PHP قبل تسجيل الدخول.',
+        incorrectCredentials: 'اسم المستخدم أو كلمة المرور غير صحيح.'
+      }
+    };
+    let language = 'en';
+    let setupRequired = false;
+    try {
+      const savedLanguage = localStorage.getItem(LANGUAGE_STORAGE_KEY);
+      if (savedLanguage === 'ar' || savedLanguage === 'en') language = savedLanguage;
+    } catch (error) {
+      console.error('Could not read the saved admin language preference.', error);
+    }
+
+    function t(key, values = {}) {
+      const text = LOGIN_TRANSLATIONS[language][key] || LOGIN_TRANSLATIONS.en[key] || key;
+      return text.replace(/\{(\w+)\}/g, (_, name) => String(values[name] ?? ''));
+    }
+
+    function translateError(error) {
+      const message = error instanceof Error ? error.message : String(error);
+      if (message === 'Username or password is incorrect.') return t('incorrectCredentials');
+      if (message === 'Set ALIEN_ADMIN_PASSWORD in the PHP hosting environment before signing in.') return t('noPassword');
+      if (message === 'Initial admin setup is only available from this computer.') return t('setupOnlyLocal');
+      const requestError = message.match(/^Request failed \((\d+)\)$/);
+      return requestError ? t('requestFailed', { status: requestError[1] }) : message;
+    }
+
+    function applyLanguage() {
+      document.documentElement.lang = language;
+      document.documentElement.dir = language === 'ar' ? 'rtl' : 'ltr';
+      document.title = `${language === 'ar' ? 'دخول المسؤول' : 'Admin Sign In'} | ALIEN hax`;
+      document.querySelectorAll('[data-i18n]').forEach((element) => {
+        element.textContent = t(element.dataset.i18n);
+      });
+      const languageButton = document.getElementById('languageToggle');
+      languageButton.textContent = language === 'ar' ? t('languageEnglish') : t('languageArabic');
+      languageButton.setAttribute('aria-label', language === 'ar' ? t('changeLanguageEnglish') : t('changeLanguageArabic'));
+      toggleButton.setAttribute('aria-label', passwordField.type === 'password' ? t('passwordShow') : t('passwordHide'));
+      toggleButton.title = passwordField.type === 'password' ? t('passwordShow') : t('passwordHide');
+      passwordField.autocomplete = setupRequired ? 'new-password' : 'current-password';
+      if (!submitButton.disabled) submitButton.textContent = t('signIn');
+    }
+
+    const form = document.getElementById('loginForm');
+    const passwordField = document.getElementById('password');
+    const toggleButton = document.getElementById('togglePassword');
+    const submitButton = document.getElementById('submitButton');
+    const message = document.getElementById('loginMessage');
+
+    async function initializeAdminLogin() {
+      try {
+        const response = await fetch('/api/admin/setup/status', { cache: 'no-store' });
+        if (!response.ok) throw new Error(`Request failed (${response.status})`);
+        const result = await response.json();
+        setupRequired = result.setupRequired === true;
+        if (typeof result.username === 'string') {
+          document.getElementById('username').value = result.username || 'abosalah';
+        }
+        applyLanguage();
+      } catch (error) {
+        console.error('Could not check whether initial admin setup is needed.', error);
+        message.textContent = translateError(error);
+      }
+    }
+
+    document.getElementById('languageToggle').addEventListener('click', () => {
+      language = language === 'ar' ? 'en' : 'ar';
+      try {
+        localStorage.setItem(LANGUAGE_STORAGE_KEY, language);
+      } catch (error) {
+        console.error('Could not save the admin language preference.', error);
+      }
+      applyLanguage();
+    });
+
+    toggleButton.addEventListener('click', () => {
+      const showPassword = passwordField.type === 'password';
+      passwordField.type = showPassword ? 'text' : 'password';
+      toggleButton.setAttribute('aria-pressed', String(showPassword));
+      toggleButton.setAttribute('aria-label', showPassword ? t('passwordHide') : t('passwordShow'));
+      toggleButton.title = showPassword ? t('passwordHide') : t('passwordShow');
+    });
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      message.textContent = '';
+      submitButton.disabled = true;
+      submitButton.textContent = t('signingIn');
+
+      try {
+        const password = passwordField.value;
+        const response = await fetch(setupRequired ? '/api/admin/setup' : '/api/admin/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(setupRequired ? {
+            username: document.getElementById('username').value,
+            password,
+            confirmPassword: password
+          } : {
+            username: document.getElementById('username').value,
+            password
+          })
+        });
+        const result = await response.json();
+
+        if (!response.ok) {
+          throw new Error(result.error || (language === 'ar' ? 'تعذر تسجيل الدخول. تحقق من بياناتك.' : 'Sign in failed. Check your credentials.'));
+        }
+
+        window.location.replace('/dashboard');
+      } catch (error) {
+        message.textContent = translateError(error);
+      } finally {
+        submitButton.disabled = false;
+        submitButton.textContent = t('signIn');
+      }
+    });
+
+    applyLanguage();
+    initializeAdminLogin();
+  </script>
+</body>
+</html>

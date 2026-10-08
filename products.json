@@ -1,0 +1,385 @@
+[
+    {
+        "id": "a11e0000000000000000000000000001",
+        "name": "LDPlayer 9/14 MEmu Player 12 - 24 Hours",
+        "category": "PUBG Cheats",
+        "storePrice": 5,
+        "duration": "24-hours",
+        "icon": "PUBG",
+        "image": "assets/images/LDPlayer.png",
+        "platforms": [
+            "LDPlayer 9/14",
+            "MEmu Player 12"
+        ],
+        "description": "24-hour PUBG Cheats access.",
+        "status": "in-stock",
+        "hidden": false
+    },
+    {
+        "id": "a11e0000000000000000000000000002",
+        "name": "LDPlayer 9/14 MEmu Player 12 - 7 Days",
+        "category": "PUBG Cheats",
+        "storePrice": 15,
+        "duration": "7-days",
+        "icon": "PUBG",
+        "image": "assets/images/LDPlayer.png",
+        "platforms": [
+            "LDPlayer 9/14",
+            "MEmu Player 12"
+        ],
+        "description": "7-day PUBG Cheats access."
+    },
+    {
+        "id": "a11e0000000000000000000000000003",
+        "name": "LDPlayer 9/14 MEmu Player 12 - 30 Days",
+        "category": "PUBG Cheats",
+        "storePrice": 30,
+        "duration": "30-days",
+        "icon": "PUBG",
+        "image": "assets/images/LDPlayer.png",
+        "platforms": [
+            "LDPlayer 9/14",
+            "MEmu Player 12"
+        ],
+        "description": "30-day PUBG Cheats access."
+    },
+    {
+        "id": "c33e0000000000000000000000000001",
+        "name": "GameLoop - 24 Hours",
+        "category": "PUBG Cheats",
+        "storePrice": 5,
+        "duration": "24-hours",
+        "icon": "GameLoop",
+        "image": "assets/images/gmeloop.png",
+        "platforms": [
+            "GameLoop"
+        ],
+        "status": "in-stock",
+        "description": "24-hour PUBG Cheats access for GameLoop."
+    },
+    {
+        "id": "c33e0000000000000000000000000002",
+        "name": "GameLoop - 7 Days",
+        "category": "PUBG Cheats",
+        "storePrice": 15,
+        "duration": "7-days",
+        "icon": "GameLoop",
+        "image": "assets/images/gmeloop.png",
+        "platforms": [
+            "GameLoop"
+        ],
+        "status": "in-stock",
+        "description": "7-day PUBG Cheats access for GameLoop."
+    },
+    {
+        "id": "c33e0000000000000000000000000003",
+        "name": "GameLoop - 30 Days",
+        "category": "PUBG Cheats",
+        "storePrice": 30,
+        "duration": "30-days",
+        "icon": "GameLoop",
+        "image": "assets/images/gmeloop.png",
+        "platforms": [
+            "GameLoop"
+        ],
+        "status": "in-stock",
+        "description": "30-day PUBG Cheats access for GameLoop."
+    },
+    {
+        "id": "b22e0000000000000000000000000001",
+        "name": "iOS Star - 24 Hours",
+        "category": "iOS",
+        "storePrice": 5,
+        "duration": "24-hours",
+        "icon": "PUBG",
+        "image": "assets/images/brand-pubg-mobile.png",
+        "status": "in-stock",
+        "description": "24-hour PUBG Mobile iOS access."
+    },
+    {
+        "id": "b22e0000000000000000000000000002",
+        "name": "iOS Star - 7 Days",
+        "category": "iOS",
+        "storePrice": 15,
+        "duration": "7-days",
+        "icon": "PUBG",
+        "image": "assets/images/brand-pubg-mobile.png",
+        "status": "in-stock",
+        "description": "7-day PUBG Mobile iOS access."
+    },
+    {
+        "id": "b22e0000000000000000000000000003",
+        "name": "iOS Star - 30 Days",
+        "category": "iOS",
+        "storePrice": 30,
+        "duration": "30-days",
+        "icon": "PUBG",
+        "image": "assets/images/brand-pubg-mobile.png",
+        "status": "in-stock",
+        "description": "30-day PUBG Mobile iOS access."
+    },
+    {
+        "id": "b22e0000000000000000000000000004",
+        "name": "Dolphin iOS - 24 Hours",
+        "category": "iOS",
+        "storePrice": 5,
+        "duration": "24-hours",
+        "icon": "Dolphin iOS",
+        "image": "assets/images/brand-dolphin-ios.png",
+        "status": "in-stock",
+        "description": "24-hour Dolphin iOS access."
+    },
+    {
+        "id": "b22e0000000000000000000000000005",
+        "name": "Dolphin iOS - 7 Days",
+        "category": "iOS",
+        "storePrice": 15,
+        "duration": "7-days",
+        "icon": "Dolphin iOS",
+        "image": "assets/images/brand-dolphin-ios.png",
+        "status": "in-stock",
+        "description": "7-day Dolphin iOS access."
+    },
+    {
+        "id": "b22e0000000000000000000000000006",
+        "name": "Dolphin iOS - 30 Days",
+        "category": "iOS",
+        "storePrice": 30,
+        "duration": "30-days",
+        "icon": "Dolphin iOS",
+        "image": "assets/images/brand-dolphin-ios.png",
+        "status": "in-stock",
+        "description": "30-day Dolphin iOS access."
+    },
+    {
+        "id": "b22e0000000000000000000000000007",
+        "name": "iOSZoon - 24 Hours",
+        "category": "iOS",
+        "storePrice": 5,
+        "duration": "24-hours",
+        "icon": "iOSZoon",
+        "image": "assets/images/brand-ioszoon.png",
+        "status": "in-stock",
+        "description": "24-hour iOSZoon access."
+    },
+    {
+        "id": "b22e0000000000000000000000000008",
+        "name": "iOSZoon - 7 Days",
+        "category": "iOS",
+        "storePrice": 15,
+        "duration": "7-days",
+        "icon": "iOSZoon",
+        "image": "assets/images/brand-ioszoon.png",
+        "status": "in-stock",
+        "description": "7-day iOSZoon access."
+    },
+    {
+        "id": "b22e0000000000000000000000000009",
+        "name": "iOSZoon - 30 Days",
+        "category": "iOS",
+        "storePrice": 30,
+        "duration": "30-days",
+        "icon": "iOSZoon",
+        "image": "assets/images/brand-ioszoon.png",
+        "status": "in-stock",
+        "description": "30-day iOSZoon access."
+    },
+    {
+        "id": "b22e0000000000000000000000000010",
+        "name": "King Cat iOS - 24 Hours",
+        "category": "iOS",
+        "storePrice": 7,
+        "duration": "24-hours",
+        "icon": "King Cat",
+        "image": "assets/images/brand-king-cat.png",
+        "status": "in-stock",
+        "description": "24-hour King Cat iOS access."
+    },
+    {
+        "id": "b22e0000000000000000000000000011",
+        "name": "King Cat iOS - 7 Days",
+        "category": "iOS",
+        "storePrice": 20,
+        "duration": "7-days",
+        "icon": "King Cat",
+        "image": "assets/images/brand-king-cat.png",
+        "status": "in-stock",
+        "description": "7-day King Cat iOS access."
+    },
+    {
+        "id": "b22e0000000000000000000000000012",
+        "name": "King Cat iOS - 30 Days",
+        "category": "iOS",
+        "storePrice": 35,
+        "duration": "30-days",
+        "icon": "King Cat",
+        "image": "assets/images/brand-king-cat.png",
+        "status": "in-stock",
+        "description": "30-day King Cat iOS access."
+    },
+    {
+        "id": "b22e0000000000000000000000000013",
+        "name": "Oasis iOS - 24 Hours",
+        "category": "iOS",
+        "storePrice": 5,
+        "duration": "24-hours",
+        "icon": "Oasis",
+        "image": "assets/images/brand-oasis.png",
+        "status": "in-stock",
+        "description": "24-hour Oasis iOS access."
+    },
+    {
+        "id": "b22e0000000000000000000000000014",
+        "name": "Oasis iOS - 7 Days",
+        "category": "iOS",
+        "storePrice": 15,
+        "duration": "7-days",
+        "icon": "Oasis",
+        "image": "assets/images/brand-oasis.png",
+        "status": "in-stock",
+        "description": "7-day Oasis iOS access."
+    },
+    {
+        "id": "b22e0000000000000000000000000015",
+        "name": "Oasis iOS - 30 Days",
+        "category": "iOS",
+        "storePrice": 30,
+        "duration": "30-days",
+        "icon": "Oasis",
+        "image": "assets/images/brand-oasis.png",
+        "status": "in-stock",
+        "description": "30-day Oasis iOS access."
+    },
+    {
+        "id": "b22e0000000000000000000000000016",
+        "name": "VN iOS Hack - 24 Hours",
+        "category": "iOS",
+        "storePrice": 5,
+        "duration": "24-hours",
+        "icon": "VN iOS",
+        "image": "assets/images/brand-vn-ios-hack.png",
+        "status": "in-stock",
+        "description": "24-hour VN iOS access."
+    },
+    {
+        "id": "b22e0000000000000000000000000017",
+        "name": "VN iOS Hack - 7 Days",
+        "category": "iOS",
+        "storePrice": 15,
+        "duration": "7-days",
+        "icon": "VN iOS",
+        "image": "assets/images/brand-vn-ios-hack.png",
+        "status": "in-stock",
+        "description": "7-day VN iOS access."
+    },
+    {
+        "id": "b22e0000000000000000000000000018",
+        "name": "VN iOS Hack - 30 Days",
+        "category": "iOS",
+        "storePrice": 30,
+        "duration": "30-days",
+        "icon": "VN iOS",
+        "image": "assets/images/brand-vn-ios-hack.png",
+        "status": "in-stock",
+        "description": "30-day VN iOS access."
+    },
+    {
+        "id": "d44e0000000000000000000000000001",
+        "name": "Titan Mobile - 24 Hours",
+        "category": "Android",
+        "storePrice": 5,
+        "duration": "24-hours",
+        "icon": "Titan Mobile",
+        "image": "assets/images/titan-mobile.jpg",
+        "status": "in-stock",
+        "description": "24-hour Titan Mobile access for Android."
+    },
+    {
+        "id": "d44e0000000000000000000000000002",
+        "name": "Titan Mobile - 7 Days",
+        "category": "Android",
+        "storePrice": 15,
+        "duration": "7-days",
+        "icon": "Titan Mobile",
+        "image": "assets/images/titan-mobile.jpg",
+        "status": "in-stock",
+        "description": "7-day Titan Mobile access for Android."
+    },
+    {
+        "id": "d44e0000000000000000000000000003",
+        "name": "Titan Mobile - 30 Days",
+        "category": "Android",
+        "storePrice": 30,
+        "duration": "30-days",
+        "icon": "Titan Mobile",
+        "image": "assets/images/titan-mobile.jpg",
+        "status": "in-stock",
+        "description": "30-day Titan Mobile access for Android."
+    },
+    {
+        "id": "e55e0000000000000000000000000001",
+        "name": "AIM X - 24 Hours",
+        "category": "Android",
+        "storePrice": 5,
+        "duration": "24-hours",
+        "icon": "AIM X",
+        "image": "assets/images/AIMX.jpg",
+        "status": "in-stock",
+        "description": "24-hour AIM X access for Android."
+    },
+    {
+        "id": "e55e0000000000000000000000000002",
+        "name": "AIM X - 7 Days",
+        "category": "Android",
+        "storePrice": 15,
+        "duration": "7-days",
+        "icon": "AIM X",
+        "image": "assets/images/AIMX.jpg",
+        "status": "in-stock",
+        "description": "7-day AIM X access for Android."
+    },
+    {
+        "id": "e55e0000000000000000000000000003",
+        "name": "AIM X - 30 Days",
+        "category": "Android",
+        "storePrice": 30,
+        "duration": "30-days",
+        "icon": "AIM X",
+        "image": "assets/images/AIMX.jpg",
+        "status": "in-stock",
+        "description": "30-day AIM X access for Android."
+    },
+    {
+        "id": "f66e0000000000000000000000000001",
+        "name": "Zolo Cheat - 24 Hours",
+        "category": "Android",
+        "storePrice": 5,
+        "duration": "24-hours",
+        "icon": "Zolo Cheat",
+        "image": "assets/images/brand-zolo-cheat.png",
+        "status": "in-stock",
+        "description": "24-hour Zolo Cheat access for Android."
+    },
+    {
+        "id": "f66e0000000000000000000000000002",
+        "name": "Zolo Cheat - 7 Days",
+        "category": "Android",
+        "storePrice": 15,
+        "duration": "7-days",
+        "icon": "Zolo Cheat",
+        "image": "assets/images/brand-zolo-cheat.png",
+        "status": "in-stock",
+        "description": "7-day Zolo Cheat access for Android."
+    },
+    {
+        "id": "f66e0000000000000000000000000003",
+        "name": "Zolo Cheat - 30 Days",
+        "category": "Android",
+        "storePrice": 30,
+        "duration": "30-days",
+        "icon": "Zolo Cheat",
+        "image": "assets/images/brand-zolo-cheat.png",
+        "status": "in-stock",
+        "description": "30-day Zolo Cheat access for Android."
+    }
+]

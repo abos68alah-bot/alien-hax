@@ -1,0 +1,36 @@
+[
+    {
+        "id": "186f9ce9852bcbebb3e89a0d24a7932d",
+        "email": "nadabarakat731@gmail.com",
+        "fullName": "Nada Barakat",
+        "createdAt": "2026-10-03T20:00:00Z"
+    },
+    {
+        "id": "9a5b61aa950e2c95e439d2c2edf4affa",
+        "email": "hhhh@gmail.com",
+        "fullName": "c2k",
+        "passwordHash": "$2y$12$asshD0dBw9cHuKFeHY9qK.kguAJmtu4.5dBVdwR4NyHFloYTNxFlm",
+        "createdAt": "2026-10-07T11:52:44+00:00"
+    },
+    {
+        "id": "f8e68865f8e380c3a5c2652c76d144a7",
+        "email": "hha@gmail.com",
+        "fullName": "c2k2",
+        "passwordHash": "$2y$12$eSYmYBcg5QaolI8a3uTzHeCadsS4bvsJH8j9HUbCyNO0LsNN64yfa",
+        "createdAt": "2026-10-07T11:57:07+00:00"
+    },
+    {
+        "id": "7a554793b367a9107826fd3c54d1c62d",
+        "email": "wwangabdallahwang@gmail.com",
+        "fullName": "ABO SALAH",
+        "passwordHash": "$2y$12$rkWj5REUa51IxtjGPoN.fOe/4EVwkxQmoSiGk302MUJvcC6wVt2Yi",
+        "createdAt": "2026-10-07T23:29:30+00:00"
+    },
+    {
+        "id": "0d509811241f1eed901c8bd774133115",
+        "email": "abos68alah@gmail.com",
+        "fullName": "body",
+        "passwordHash": "$2y$12$2e46VxCBRkr3gQhY8wdaa.TAC/Gw/he.lcTyeh2EPat.KmLPJwY8i",
+        "createdAt": "2026-10-08T10:52:50+00:00"
+    }
+]
